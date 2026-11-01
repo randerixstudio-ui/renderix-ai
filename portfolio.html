@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio — Randerix AI | Architecture Projects Pakistan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--black:#080808;--black2:#0f0f0f;--black3:#141414;--gold:#C9A84C;--gold2:#E8C97E;--white:#F5F0E8;--white2:#d4cfc7;--font-display:'Cormorant Garamond',serif;--font-body:'Inter',sans-serif;--font-urdu:'Noto Nastaliq Urdu',serif;}
+*{margin:0;padding:0;box-sizing:border-box;}body{background:var(--black);color:var(--white);font-family:var(--font-body);}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--gold);}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,0.15);}
+.nav-logo{font-family:var(--font-display);font-size:1.6rem;font-weight:600;color:var(--gold);text-decoration:none;}.nav-logo span{color:var(--white);font-weight:300;}
+.nav-links{display:flex;gap:36px;list-style:none;}.nav-links a{color:var(--white2);font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:color 0.3s;}.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-cta{background:var(--gold);color:var(--black);padding:10px 24px;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;}
+.page-hero{padding:140px 60px 60px;background:var(--black2);border-bottom:1px solid rgba(201,168,76,0.1);}
+.page-hero h1{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--white);margin-bottom:12px;}.page-hero h1 em{font-style:italic;color:var(--gold);}
+section{padding:80px 60px;}
+/* FILTER */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px;}
+.filter-btn{background:transparent;border:1px solid rgba(201,168,76,0.2);color:var(--white2);padding:10px 20px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:all 0.3s;}
+.filter-btn:hover,.filter-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold);}
+/* PORTFOLIO GRID */
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.port-card{position:relative;overflow:hidden;cursor:pointer;background:var(--black2);}
+.port-card:nth-child(1){grid-column:span 2;grid-row:span 2;}
+.port-visual{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--black2),var(--gray2));display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(201,168,76,0.2);position:relative;overflow:hidden;}
+.port-card:nth-child(1) .port-visual{aspect-ratio:unset;height:100%;min-height:400px;font-size:6rem;}
+.port-visual::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent);}
+.port-tag{position:absolute;top:12px;left:12px;background:var(--gold);color:var(--black);font-size:0.62rem;font-weight:600;letter-spacing:0.1em;padding:4px 10px;text-transform:uppercase;z-index:2;}
+.port-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.9) 0%,transparent 50%);opacity:0;transition:opacity 0.4s;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;z-index:2;}
+.port-card:hover .port-overlay{opacity:1;}
+.port-overlay h3{font-family:var(--font-display);font-size:1.2rem;color:var(--white);}
+.port-overlay p{font-size:0.72rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
+.port-overlay .cta-link{margin-top:8px;color:var(--gold);font-size:0.72rem;text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px;}
+
+/* PROJECT DETAIL */
+.project-detail{background:var(--black2);padding:40px;margin-top:2px;}
+.project-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(201,168,76,0.08);}
+.spec-item{background:var(--black3);padding:20px;text-align:center;}
+.spec-label{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.spec-value{font-family:var(--font-display);font-size:1.2rem;color:var(--white);}
+
+.whatsapp-btn{position:fixed;bottom:30px;right:30px;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;z-index:999;}
+@media(max-width:900px){nav{padding:16px 24px;}.nav-links{display:none;}section{padding:50px 24px;}.port-grid{grid-template-columns:1fr;}.port-card:nth-child(1){grid-column:span 1;grid-row:span 1;}.port-card:nth-child(1) .port-visual{min-height:200px;}.project-specs{grid-template-columns:1fr 1fr;}.page-hero{padding:100px 24px 50px;}}
+</style>
+</head>
+<body>
+<a href="https://wa.me/923294839897" class="whatsapp-btn" target="_blank">💬</a>
+<nav>
+  <a href="index.html" class="nav-logo">RANDERIX <span>AI</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="ai-tools.html">AI Tools</a></li>
+    <li><a href="portfolio.html" class="active">Portfolio</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Free Consultation</a>
+</nav>
+<div class="page-hero">
+  <h1>Our <em>Portfolio</em></h1>
+  <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:1rem;color:var(--gold2);direction:rtl;margin-bottom:12px;">۵۰۰+ مکمل کیے گئے منصوبے — پاکستان اور یو اے ای میں</p>
+  <p style="color:var(--white2);font-weight:300;">500+ projects delivered across Pakistan and UAE. Every one built with precision and passion.</p>
+</div>
+<section>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterPort('all',this)">All Projects</button>
+    <button class="filter-btn" onclick="filterPort('residential',this)">🏠 Residential</button>
+    <button class="filter-btn" onclick="filterPort('commercial',this)">🏢 Commercial</button>
+    <button class="filter-btn" onclick="filterPort('interior',this)">🛋️ Interior</button>
+    <button class="filter-btn" onclick="filterPort('3d',this)">📐 3D Visualization</button>
+  </div>
+
+  <div class="port-grid" id="port-grid">
+    <div class="port-card" data-cat="residential">
+      <div class="port-visual" style="font-size:6rem;">🏛️</div>
+      <div class="port-tag">Featured</div>
+      <div class="port-overlay">
+        <h3>1 Kanal Modern Villa</h3>
+        <p>Residential · Faisalabad · 2024</p>
+        <a href="contact.html" class="cta-link">Inquire Similar →</a>
+      </div>
+    </div>
+    <div class="port-card" data-cat="commercial">
+      <div class="port-visual">🏢</div>
+      <div class="port-tag">Commercial</div>
+      <div class="port-overlay"><h3>DHA Lahore Commercial Plaza</h3><p>Commercial · Lahore · 2024</p></div>
+    </div>
+    <div class="port-card" data-cat="interior">
+      <div class="port-visual">🛋️</div>
+      <div class="port-tag">Interior</div>
+      <div class="port-overlay"><h3>Luxury Drawing Room</h3><p>Interior · Islamabad · 2024</p></div>
+    </div>
+    <div class="port-card" data-cat="residential">
+      <div class="port-visual">🏠</div>
+      <div class="port-tag">Residential</div>
+      <div class="port-overlay"><h3>10 Marla Modern Home</h3><p>Residential · Islamabad · 2023</p></div>
+    </div>
+    <div class="port-card" data-cat="3d">
+      <div class="port-visual">📐</div>
+      <div class="port-tag">3D Viz</div>
+      <div class="port-overlay"><h3>5 Marla 3D Elevation</h3><p>3D · Lahore · 2024</p></div>
+    </div>
+    <div class="port-card" data-cat="interior">
+      <div class="port-visual">🍳</div>
+      <div class="port-tag">Interior</div>
+      <div class="port-overlay"><h3>Modular Kitchen Design</h3><p>Interior · Faisalabad · 2023</p></div>
+    </div>
+    <div class="port-card" data-cat="residential">
+      <div class="port-visual">🏗️</div>
+      <div class="port-tag">Residential</div>
+      <div class="port-overlay"><h3>5 Marla Smart Home</h3><p>Residential · Faisalabad · 2023</p></div>
+    </div>
+    <div class="port-card" data-cat="commercial">
+      <div class="port-visual">🏨</div>
+      <div class="port-tag">Commercial</div>
+      <div class="port-overlay"><h3>Restaurant & Café Design</h3><p>Commercial · Lahore · 2024</p></div>
+    </div>
+    <div class="port-card" data-cat="interior">
+      <div class="port-visual">🛏️</div>
+      <div class="port-tag">Interior</div>
+      <div class="port-overlay"><h3>Master Bedroom Suite</h3><p>Interior · Karachi · 2024</p></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;">
+    <p style="font-size:0.85rem;color:var(--white2);margin-bottom:20px;">Want a project like these? Let's talk.</p>
+    <a href="contact.html" style="display:inline-block;background:var(--gold);color:var(--black);padding:16px 40px;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;margin-right:12px;">Start Your Project →</a>
+    <a href="ai-tools.html" style="display:inline-block;background:transparent;color:var(--white);padding:16px 40px;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(255,255,255,0.2);">Try AI Tools Free</a>
+  </div>
+</section>
+
+<section style="background:var(--black2);">
+  <h2 style="font-family:var(--font-display);font-size:2.5rem;color:var(--white);margin-bottom:40px;">Project <em style="color:var(--gold);font-style:italic;">Stats</em></h2>
+  <div class="project-specs">
+    <div class="spec-item"><div class="spec-label">Total Projects</div><div class="spec-value">500+</div></div>
+    <div class="spec-item"><div class="spec-label">Residential</div><div class="spec-value">380+</div></div>
+    <div class="spec-item"><div class="spec-label">Commercial</div><div class="spec-value">85+</div></div>
+    <div class="spec-item"><div class="spec-label">Interior</div><div class="spec-value">200+</div></div>
+  </div>
+</section>
+
+<footer style="background:var(--black);border-top:1px solid rgba(201,168,76,0.15);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
+  <span style="font-family:var(--font-display);font-size:1.4rem;color:var(--gold);">RANDERIX AI</span>
+  <p style="font-size:0.75rem;color:var(--white2);">© 2025 Randerix AI Studio · Est. 1985</p>
+  <a href="https://wa.me/923294839897" style="color:var(--gold);font-size:0.8rem;text-decoration:none;">+92 329 4839897</a>
+</footer>
+<script>
+function filterPort(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.port-card').forEach((card, i) => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.style.display = show ? 'block' : 'none';
+    // Reset featured span
+    if(i === 0) { card.style.gridColumn = (cat === 'all' || card.dataset.cat === cat) ? 'span 2' : 'span 1'; card.style.gridRow = (cat === 'all' || card.dataset.cat === cat) ? 'span 2' : 'span 1'; }
+  });
+}
+</script>
+</body>
+</html>

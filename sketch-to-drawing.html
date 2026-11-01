@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sketch to Drawing — Randerix AI | Hand Sketch to Floor Plan + 3D + Elevation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&family=Noto+Nastaliq+Urdu&family=Noto+Kufi+Arabic&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0A0A0A;--bg2:#111;--bg3:#181818;--bg4:#202020;
+  --gold:#C9A84C;--gold2:#E8C97E;
+  --white:#F5F0E8;--dim:#9A9488;--dim2:#6B6358;
+  --green:#2ECC71;--red:#E74C3C;
+  --fd:'Cormorant Garamond',serif;--fb:'Inter',sans-serif;
+  --fu:'Noto Nastaliq Urdu',serif;--fa:'Noto Kufi Arabic',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);min-height:100vh;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,0.12);}
+.nav-logo{font-family:var(--fd);font-size:1.4rem;font-weight:600;color:var(--gold);text-decoration:none;}.nav-logo span{color:var(--white);font-weight:300;}
+.nav-back{color:var(--dim);font-size:0.78rem;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;}.nav-back:hover{color:var(--gold);}
+
+/* PAGE HERO */
+.page-hero{padding:110px 48px 40px;background:var(--bg2);border-bottom:1px solid rgba(201,168,76,0.1);}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:6px 14px;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.page-hero h1{font-family:var(--fd);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.page-hero h1 em{font-style:italic;color:var(--gold);}
+.page-hero p{font-size:0.9rem;color:var(--dim);max-width:600px;line-height:1.7;}
+
+/* MAIN LAYOUT */
+.main{max-width:1200px;margin:0 auto;padding:48px;}
+
+/* UPLOAD SECTION */
+.upload-section{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;}
+.upload-zone{border:2px dashed rgba(201,168,76,0.25);background:var(--bg2);padding:32px;text-align:center;cursor:pointer;transition:all 0.3s;min-height:220px;display:flex;align-items:center;justify-content:center;flex-direction:column;border-radius:4px;}
+.upload-zone:hover{border-color:var(--gold);background:rgba(201,168,76,0.03);}
+.upload-zone.has-image{padding:12px;}
+.upload-icon{font-size:2.5rem;margin-bottom:12px;}
+.upload-title{font-size:0.9rem;font-weight:500;color:var(--white);margin-bottom:6px;}
+.upload-sub{font-size:0.78rem;color:var(--dim);}
+.upload-urdu{font-family:var(--fu);font-size:0.85rem;color:var(--gold);direction:rtl;margin-top:8px;}
+#sketch-preview{max-width:100%;max-height:200px;border:1px solid rgba(201,168,76,0.2);}
+
+/* OPTIONS PANEL */
+.options-panel{background:var(--bg2);border:1px solid rgba(201,168,76,0.12);padding:28px;border-radius:4px;}
+.options-title{font-family:var(--fd);font-size:1.2rem;color:var(--white);margin-bottom:20px;}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.field label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);}
+.field select,.field textarea,.field input{background:var(--bg3);border:1px solid rgba(201,168,76,0.15);color:var(--white);padding:10px 14px;font-family:var(--fb);font-size:0.85rem;border-radius:3px;transition:border-color 0.2s;}
+.field select:focus,.field textarea:focus,.field input:focus{outline:none;border-color:var(--gold);}
+.field select option{background:var(--bg3);}
+.field textarea{min-height:80px;resize:vertical;}
+
+/* GENERATE BUTTON */
+.gen-btn{width:100%;padding:15px;background:var(--gold);color:var(--bg);border:none;font-family:var(--fb);font-size:0.85rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;border-radius:3px;margin-top:8px;}
+.gen-btn:hover{background:var(--gold2);}
+.gen-btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+/* LOADING */
+.loading-panel{background:var(--bg2);border:1px solid rgba(201,168,76,0.15);padding:40px;text-align:center;display:none;border-radius:4px;}
+.loading-panel.show{display:block;}
+.loading-spinner{width:48px;height:48px;border:3px solid rgba(201,168,76,0.15);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-family:var(--fd);font-size:1.3rem;color:var(--white);margin-bottom:8px;}
+.loading-sub{font-size:0.82rem;color:var(--dim);}
+
+/* RESULTS SECTION */
+.results{display:none;}
+.results.show{display:block;}
+
+/* INTERPRETATION BAR */
+.interp-bar{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:16px 20px;margin-bottom:24px;display:flex;gap:16px;align-items:flex-start;border-radius:4px;}
+.interp-icon{font-size:1.4rem;flex-shrink:0;}
+.interp-text{font-size:0.85rem;color:var(--dim);line-height:1.6;}
+
+/* PLOT INFO CARDS */
+.info-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px;}
+.info-card{background:var(--bg2);padding:18px 16px;text-align:center;border:1px solid rgba(201,168,76,0.08);}
+.info-card .val{font-family:var(--fd);font-size:1.5rem;color:var(--gold);line-height:1;}
+.info-card .lbl{font-size:0.65rem;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;}
+
+/* DRAWING TABS */
+.drawing-tabs{display:flex;gap:0;border-bottom:1px solid rgba(201,168,76,0.12);margin-bottom:24px;}
+.dtab{padding:14px 24px;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.3s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--fb);}
+.dtab:hover{color:var(--white);}
+.dtab.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* DRAWING PANELS */
+.drawing-panel{display:none;}
+.drawing-panel.active{display:block;}
+.canvas-wrap{background:var(--bg2);border:1px solid rgba(201,168,76,0.12);padding:24px;margin-bottom:16px;border-radius:4px;}
+.canvas-title{font-family:var(--fd);font-size:1.1rem;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+canvas{display:block;max-width:100%;margin:0 auto;}
+.drawing-notes{background:var(--bg3);border-left:2px solid var(--gold);padding:14px 18px;font-size:0.82rem;color:var(--dim);line-height:1.7;margin-top:12px;}
+.drawing-notes .local{font-family:var(--fu);font-size:0.9rem;direction:rtl;color:var(--gold2);margin-top:8px;}
+
+/* ROOM TABLE */
+.room-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:16px;}
+.room-table th{background:rgba(201,168,76,0.1);color:var(--gold);padding:10px 14px;text-align:left;font-weight:500;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;}
+.room-table td{padding:10px 14px;color:var(--dim);border-bottom:1px solid rgba(201,168,76,0.06);}
+.room-table tr:last-child td{border-bottom:none;}
+.room-table .room-name{color:var(--white);font-weight:500;}
+
+/* ELEVATION DETAILS */
+.elevation-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.elev-card{background:var(--bg3);padding:18px;border:1px solid rgba(201,168,76,0.08);border-radius:3px;}
+.elev-card h4{font-family:var(--fd);font-size:1rem;color:var(--gold);margin-bottom:8px;}
+.elev-card p{font-size:0.82rem;color:var(--dim);line-height:1.6;}
+.material-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.mtag{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);padding:4px 10px;font-size:0.7rem;}
+
+/* CONSTRUCTION NOTES */
+.const-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px;}
+.const-card{background:var(--bg3);padding:18px;border:1px solid rgba(201,168,76,0.08);border-radius:3px;}
+.const-card h4{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.const-card ul{list-style:none;}
+.const-card ul li{font-size:0.8rem;color:var(--dim);padding:4px 0;border-bottom:1px solid rgba(201,168,76,0.05);}
+.const-card ul li::before{content:'✦ ';color:rgba(201,168,76,0.4);font-size:0.6rem;}
+
+/* SUMMARY */
+.summary-box{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.15);padding:24px;border-radius:4px;margin-top:24px;}
+.summary-box p{font-size:0.9rem;color:var(--white2,#d4cfc7);line-height:1.8;margin-bottom:12px;}
+.summary-local{font-family:var(--fu);font-size:1rem;color:var(--gold2);direction:rtl;line-height:2;padding-top:12px;border-top:1px solid rgba(201,168,76,0.12);}
+
+/* DOWNLOAD BTN */
+.download-btn{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:12px 28px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--fb);transition:all 0.3s;border-radius:3px;margin-top:24px;}
+.download-btn:hover{background:var(--gold);color:var(--bg);}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:999;background:#25D366;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.3);}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;}.main{padding:24px 16px;}
+  .upload-section{grid-template-columns:1fr;}.info-cards{grid-template-columns:1fr 1fr;}
+  .elevation-grid,.const-grid{grid-template-columns:1fr;}.page-hero{padding:90px 20px 30px;}
+}
+</style>
+</head>
+<body>
+
+<a href="https://wa.me/923294839897" class="wa-float" target="_blank">💬</a>
+
+<nav>
+  <a href="index.html" class="nav-logo">RANDERIX <span>AI</span></a>
+  <a href="ai-tools.html" class="nav-back">← AI Tools</a>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-badge">🏗️ AI Architectural Drawing Converter</div>
+  <h1>Hand Sketch to <em>Full Drawings</em></h1>
+  <p>Upload your rough sketch — AI converts it to professional 2D floor plan, 3D isometric view, and elevation drawings. Download as PDF. Works in Urdu, English, Arabic.</p>
+</div>
+
+<div class="main">
+
+  <!-- UPLOAD + OPTIONS -->
+  <div class="upload-section">
+    <!-- Upload Zone -->
+    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('sketch-input').click()">
+      <div id="upload-placeholder">
+        <div class="upload-icon">📐</div>
+        <p class="upload-title">Upload Hand Sketch</p>
+        <p class="upload-sub">Click or drag & drop your sketch photo</p>
+        <p class="upload-sub">JPG, PNG — Mobile photo also works</p>
+        <p class="upload-urdu">اپنا ہاتھ سے بنایا خاکہ یہاں اپلوڈ کریں</p>
+      </div>
+      <img id="sketch-preview" style="display:none;"/>
+    </div>
+    <input type="file" id="sketch-input" accept="image/*" style="display:none;" onchange="handleUpload(event)"/>
+
+    <!-- Options -->
+    <div class="options-panel">
+      <p class="options-title">Drawing Options</p>
+
+      <div class="field">
+        <label>Language / زبان / لغة</label>
+        <select id="opt-lang">
+          <option value="auto">Auto Detect (Recommended)</option>
+          <option value="english">English</option>
+          <option value="urdu">اردو — Urdu</option>
+          <option value="arabic">عربي — Arabic</option>
+          <option value="hindi">हिंदी — Hindi</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Architectural Style</label>
+        <select id="opt-style">
+          <option value="">Auto Detect from Sketch</option>
+          <option value="Modern Contemporary">Modern Contemporary</option>
+          <option value="Traditional Pakistani">Traditional Pakistani</option>
+          <option value="Islamic Architecture">Islamic Architecture</option>
+          <option value="Colonial">Colonial</option>
+          <option value="Minimalist">Minimalist</option>
+          <option value="Luxury">Luxury</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Notes / Additional Details</label>
+        <textarea id="opt-notes" placeholder="Any dimensions, labels, or details not clear in sketch...
+مثال: یہ 5 مرلہ پلاٹ ہے، اوپر بیڈ رومز ہیں
+Example: 5 Marla plot, ground floor only, car porch needed"></textarea>
+      </div>
+
+      <button class="gen-btn" id="gen-btn" onclick="generateDrawings()" disabled>
+        🤖 Generate Full Drawings →
+      </button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-panel" id="loading-panel">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">AI is analyzing your sketch...</p>
+    <p class="loading-sub" id="loading-step">Reading sketch geometry and room layout</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+
+    <!-- Interpretation -->
+    <div class="interp-bar" id="interp-bar">
+      <span class="interp-icon">🔍</span>
+      <p class="interp-text" id="interp-text"></p>
+    </div>
+
+    <!-- Plot Info -->
+    <div class="info-cards" id="info-cards"></div>
+
+    <!-- Drawing Tabs -->
+    <div class="drawing-tabs">
+      <button class="dtab active" onclick="switchTab('floor2d', this)">📐 2D Floor Plan</button>
+      <button class="dtab" onclick="switchTab('iso3d', this)">🏗️ 3D Isometric</button>
+      <button class="dtab" onclick="switchTab('elevation', this)">🏛️ Elevations</button>
+      <button class="dtab" onclick="switchTab('construction', this)">📋 Construction Notes</button>
+    </div>
+
+    <!-- 2D FLOOR PLAN -->
+    <div class="drawing-panel active" id="panel-floor2d">
+      <div class="canvas-wrap">
+        <p class="canvas-title">📐 2D Floor Plan — Ground Floor</p>
+        <canvas id="canvas-2d-ground" width="800" height="500"></canvas>
+      </div>
+      <div class="canvas-wrap" id="upper-wrap" style="display:none;">
+        <p class="canvas-title">📐 2D Floor Plan — Upper Floor</p>
+        <canvas id="canvas-2d-upper" width="800" height="500"></canvas>
+      </div>
+      <table class="room-table" id="room-table"></table>
+    </div>
+
+    <!-- 3D ISOMETRIC -->
+    <div class="drawing-panel" id="panel-iso3d">
+      <div class="canvas-wrap">
+        <p class="canvas-title">🏗️ 3D Isometric Massing</p>
+        <canvas id="canvas-3d" width="800" height="520"></canvas>
+        <div class="drawing-notes" id="iso-notes"></div>
+      </div>
+    </div>
+
+    <!-- ELEVATIONS -->
+    <div class="drawing-panel" id="panel-elevation">
+      <div class="canvas-wrap">
+        <p class="canvas-title">🏛️ Front Elevation</p>
+        <canvas id="canvas-elev-front" width="800" height="400"></canvas>
+      </div>
+      <div class="canvas-wrap">
+        <p class="canvas-title">🏛️ Side Elevation</p>
+        <canvas id="canvas-elev-side" width="800" height="400"></canvas>
+      </div>
+      <div class="elevation-grid" id="elev-details"></div>
+    </div>
+
+    <!-- CONSTRUCTION NOTES -->
+    <div class="drawing-panel" id="panel-construction">
+      <div class="const-grid" id="const-grid"></div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-box" id="summary-box"></div>
+
+    <!-- DOWNLOAD -->
+    <button class="download-btn" onclick="downloadPDF()">
+      📄 Download Full Drawing Set as PDF →
+    </button>
+
+  </div>
+</div>
+
+<script>
+let sketchBase64 = null;
+let sketchMimeType = null;
+let drawingData = null;
+
+// ── Upload ──
+function handleUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  sketchMimeType = file.type;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    sketchBase64 = ev.target.result.split(',')[1];
+    document.getElementById('upload-placeholder').style.display = 'none';
+    const prev = document.getElementById('sketch-preview');
+    prev.src = ev.target.result;
+    prev.style.display = 'block';
+    document.getElementById('upload-zone').classList.add('has-image');
+    document.getElementById('gen-btn').disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Tab switching ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.drawing-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Loading steps ──
+const loadingSteps = [
+  "Reading sketch geometry and room layout...",
+  "Identifying rooms, doors and windows...",
+  "Calculating room dimensions...",
+  "Generating 2D floor plan coordinates...",
+  "Building 3D isometric model...",
+  "Designing front and side elevations...",
+  "Preparing construction specifications...",
+  "Finalizing architectural drawings..."
+];
+let loadingInterval;
+function startLoading() {
+  let i = 0;
+  const el = document.getElementById('loading-step');
+  loadingInterval = setInterval(() => {
+    el.textContent = loadingSteps[i % loadingSteps.length];
+    i++;
+  }, 1800);
+}
+function stopLoading() { clearInterval(loadingInterval); }
+
+// ── Generate ──
+async function generateDrawings() {
+  if (!sketchBase64) return;
+  const lang = document.getElementById('opt-lang').value;
+  const notes = document.getElementById('opt-notes').value;
+  const style = document.getElementById('opt-style').value;
+  const fullNotes = style ? `Architectural style preference: ${style}. ${notes}` : notes;
+
+  document.getElementById('gen-btn').disabled = true;
+  document.getElementById('gen-btn').textContent = '⏳ Generating...';
+  document.getElementById('loading-panel').classList.add('show');
+  document.getElementById('results').classList.remove('show');
+  startLoading();
+
+  try {
+    const res = await fetch('/.netlify/functions/sketch-to-drawing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image_base64: sketchBase64, media_type: sketchMimeType, notes: fullNotes, language: lang })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    drawingData = data;
+
+    stopLoading();
+    document.getElementById('loading-panel').classList.remove('show');
+    renderResults(data);
+    document.getElementById('results').classList.add('show');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+  } catch (err) {
+    stopLoading();
+    document.getElementById('loading-panel').classList.remove('show');
+    document.getElementById('loading-panel').innerHTML = `<p style="color:#e74c3c;font-size:0.9rem;">Error: ${err.message}<br/>Please try with a clearer sketch or WhatsApp us: +92 329 4839897</p>`;
+    document.getElementById('loading-panel').classList.add('show');
+  }
+  document.getElementById('gen-btn').disabled = false;
+  document.getElementById('gen-btn').textContent = '🔄 Regenerate Drawings →';
+}
+
+// ── Render all results ──
+function renderResults(d) {
+  // Interpretation
+  document.getElementById('interp-text').textContent = d.interpretation || '';
+
+  // Plot info cards
+  const pi = d.plot_info || {};
+  document.getElementById('info-cards').innerHTML = `
+    <div class="info-card"><div class="val">${pi.estimated_size || 'N/A'}</div><div class="lbl">Plot Size</div></div>
+    <div class="info-card"><div class="val">${pi.estimated_sqft ? pi.estimated_sqft.toLocaleString() : 'N/A'} sqft</div><div class="lbl">Total Area</div></div>
+    <div class="info-card"><div class="val">${pi.shape || 'N/A'}</div><div class="lbl">Shape</div></div>
+    <div class="info-card"><div class="val">${pi.orientation || 'N/A'}</div><div class="lbl">Orientation</div></div>
+  `;
+
+  // 2D Floor Plans
+  const fp = d.floor_plan_2d || {};
+  draw2DFloorPlan('canvas-2d-ground', fp.ground_floor, 'Ground Floor', fp.total_floors);
+  if (fp.upper_floor && fp.upper_floor.rooms && fp.upper_floor.rooms.length > 0) {
+    document.getElementById('upper-wrap').style.display = 'block';
+    draw2DFloorPlan('canvas-2d-upper', fp.upper_floor, 'Upper Floor', fp.total_floors);
+  }
+  renderRoomTable(fp.ground_floor?.rooms || []);
+
+  // 3D Isometric
+  const iso = d.isometric_3d || {};
+  draw3DIsometric('canvas-3d', iso, fp);
+  document.getElementById('iso-notes').textContent = iso.description || '';
+
+  // Elevations
+  drawFrontElevation('canvas-elev-front', d.elevations?.front, d.plot_info);
+  drawSideElevation('canvas-elev-side', d.elevations?.side, d.plot_info);
+  renderElevationDetails(d.elevations);
+
+  // Construction
+  renderConstructionNotes(d.construction_notes);
+
+  // Summary
+  const lang = d.language_detected;
+  const isRtl = lang === 'urdu' || lang === 'arabic';
+  document.getElementById('summary-box').innerHTML = `
+    <p>${d.summary || ''}</p>
+    ${d.summary_local && d.summary_local !== d.summary ? `<p class="summary-local">${d.summary_local}</p>` : ''}
+  `;
+}
+
+// ── Draw 2D Floor Plan ──
+function draw2DFloorPlan(canvasId, floorData, label, totalFloors) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || !floorData) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = 800, H = 500;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  // Background
+  ctx.fillStyle = '#111111';
+  ctx.fillRect(0, 0, W, H);
+
+  const rooms = floorData.rooms || [];
+  const cols = 4, rows = 4;
+  const pad = 60, titleH = 40;
+  const cellW = (W - pad * 2) / cols;
+  const cellH = (H - pad - titleH - 20) / rows;
+
+  // Title
+  ctx.fillStyle = '#C9A84C';
+  ctx.font = '500 14px Inter, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(label + (totalFloors > 1 ? ` (${totalFloors} Floors Total)` : ''), pad, 30);
+
+  // Grid lines (faint)
+  ctx.strokeStyle = 'rgba(201,168,76,0.06)';
+  ctx.lineWidth = 0.5;
+  for (let c = 0; c <= cols; c++) {
+    ctx.beginPath();
+    ctx.moveTo(pad + c * cellW, titleH);
+    ctx.lineTo(pad + c * cellW, H - 20);
+    ctx.stroke();
+  }
+  for (let r = 0; r <= rows; r++) {
+    ctx.beginPath();
+    ctx.moveTo(pad, titleH + r * cellH);
+    ctx.lineTo(W - pad, titleH + r * cellH);
+    ctx.stroke();
+  }
+
+  // Outer boundary
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(pad, titleH, cellW * cols, cellH * rows);
+
+  // Room palette
+  const palette = [
+    'rgba(201,168,76,0.18)', 'rgba(52,152,219,0.18)', 'rgba(46,204,113,0.12)',
+    'rgba(155,89,182,0.18)', 'rgba(231,76,60,0.12)', 'rgba(241,196,15,0.12)',
+    'rgba(26,188,156,0.15)', 'rgba(52,73,94,0.3)'
+  ];
+  const borderColors = ['#C9A84C','#3498DB','#2ECC71','#9B59B6','#E74C3C','#F1C40F','#1ABC9C','#34495E'];
+
+  // Draw rooms
+  rooms.forEach((room, i) => {
+    const cs = Math.min(room.col_start || 0, cols - 1);
+    const rs = Math.min(room.row_start || 0, rows - 1);
+    const cspan = Math.min(room.col_span || 1, cols - cs);
+    const rspan = Math.min(room.row_span || 1, rows - rs);
+
+    const x = pad + cs * cellW;
+    const y = titleH + rs * cellH;
+    const w = cellW * cspan;
+    const h = cellH * rspan;
+
+    // Room fill
+    ctx.fillStyle = palette[i % palette.length];
+    ctx.fillRect(x + 1, y + 1, w - 2, h - 2);
+
+    // Room border
+    ctx.strokeStyle = borderColors[i % borderColors.length];
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+
+    // Room name
+    ctx.fillStyle = '#F5F0E8';
+    ctx.font = '500 12px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    const name = room.name || '';
+    const lines = wrapText(ctx, name, w - 20);
+    let ty = y + h / 2 - (lines.length * 7);
+    lines.forEach(line => {
+      ctx.fillText(line, x + w / 2, ty);
+      ty += 15;
+    });
+
+    // Dimensions
+    if (room.width_ft && room.length_ft) {
+      ctx.fillStyle = '#9A9488';
+      ctx.font = '400 10px Inter, sans-serif';
+      ctx.fillText(`${room.width_ft}' × ${room.length_ft}'`, x + w / 2, ty + 4);
+    }
+
+    // Local name (if different)
+    if (room.name_local && room.name_local !== room.name) {
+      ctx.fillStyle = 'rgba(201,168,76,0.7)';
+      ctx.font = '400 10px Noto Nastaliq Urdu, serif';
+      ctx.fillText(room.name_local, x + w / 2, ty + 16);
+    }
+  });
+
+  // Compass
+  drawCompass(ctx, W - 36, 56, 22);
+  // Scale bar
+  drawScaleBar(ctx, pad, H - 16, 100, floorData.total_area_sqft);
+}
+
+function wrapText(ctx, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let current = '';
+  words.forEach(w => {
+    const test = current ? current + ' ' + w : w;
+    if (ctx.measureText(test).width > maxWidth && current) {
+      lines.push(current); current = w;
+    } else { current = test; }
+  });
+  if (current) lines.push(current);
+  return lines.slice(0, 2);
+}
+
+function drawCompass(ctx, cx, cy, r) {
+  ctx.strokeStyle = 'rgba(201,168,76,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = '#C9A84C';
+  ctx.beginPath(); ctx.moveTo(cx, cy - r + 4); ctx.lineTo(cx - 6, cy + 4); ctx.lineTo(cx + 6, cy + 4); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#F5F0E8';
+  ctx.font = '600 10px Inter'; ctx.textAlign = 'center';
+  ctx.fillText('N', cx, cy - r - 5);
+}
+
+function drawScaleBar(ctx, x, y, len, areaSqft) {
+  ctx.fillStyle = '#9A9488'; ctx.font = '400 10px Inter'; ctx.textAlign = 'left';
+  ctx.fillText(areaSqft ? `Total: ${areaSqft.toLocaleString()} sqft` : 'Scale approximate', x, y);
+}
+
+// ── Draw 3D Isometric ──
+function draw3DIsometric(canvasId, isoData, fpData) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = 800, H = 520;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  ctx.fillStyle = '#0D0D0D';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw ground shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.beginPath();
+  ctx.ellipse(W/2, H - 60, 200, 40, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  const totalFloors = isoData.floors_height_ft?.length || (fpData?.total_floors || 1);
+  const volumes = isoData.key_volumes || [];
+
+  // Base isometric parameters
+  const iso = {
+    originX: W / 2,
+    originY: H - 100,
+    scaleX: 1.8,
+    scaleY: 0.9,
+    scaleZ: 1.4,
+    floorH: 70
+  };
+
+  function isoPoint(x, y, z) {
+    return {
+      x: iso.originX + (x - y) * iso.scaleX * 30,
+      y: iso.originY - z * iso.scaleZ * 20 + (x + y) * iso.scaleY * 15
+    };
+  }
+
+  function drawIsoFace(points, fillColor, strokeColor) {
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    points.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.closePath();
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+    ctx.strokeStyle = strokeColor;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Main building box
+  const bW = 3, bD = 3, bH = totalFloors * 2;
+  const floors = Math.max(1, totalFloors);
+
+  // Draw each floor
+  for (let f = 0; f < floors; f++) {
+    const z = f * 2;
+    const alpha = 1 - f * 0.1;
+
+    // Front face
+    drawIsoFace([
+      isoPoint(0, 0, z), isoPoint(bW, 0, z),
+      isoPoint(bW, 0, z + 2), isoPoint(0, 0, z + 2)
+    ], `rgba(30,30,30,${alpha})`, '#C9A84C');
+
+    // Side face
+    drawIsoFace([
+      isoPoint(bW, 0, z), isoPoint(bW, bD, z),
+      isoPoint(bW, bD, z + 2), isoPoint(bW, 0, z + 2)
+    ], `rgba(20,20,20,${alpha})`, '#8A7438');
+
+    // Windows on front face (per floor)
+    const wCount = Math.min(3, 3);
+    for (let w = 0; w < wCount; w++) {
+      const wx = 0.3 + w * 0.9;
+      const wz = z + 0.4;
+      const p1 = isoPoint(wx, 0.01, wz);
+      const p2 = isoPoint(wx + 0.5, 0.01, wz);
+      const p3 = isoPoint(wx + 0.5, 0.01, wz + 0.9);
+      const p4 = isoPoint(wx, 0.01, wz + 0.9);
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.lineTo(p3.x, p3.y);
+      ctx.lineTo(p4.x, p4.y);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(100,180,255,0.25)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(201,168,76,0.4)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // Main door on ground floor
+    if (f === 0) {
+      const dp = isoPoint(1.1, 0.01, 0);
+      const dp2 = isoPoint(1.7, 0.01, 0);
+      const dp3 = isoPoint(1.7, 0.01, 1.2);
+      const dp4 = isoPoint(1.1, 0.01, 1.2);
+      ctx.beginPath();
+      ctx.moveTo(dp.x, dp.y);
+      ctx.lineTo(dp2.x, dp2.y);
+      ctx.lineTo(dp3.x, dp3.y);
+      ctx.lineTo(dp4.x, dp4.y);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(101,67,33,0.8)';
+      ctx.fill();
+      ctx.strokeStyle = '#C9A84C';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+
+  // Roof / Top face
+  const roofType = isoData.roof_type || 'Flat';
+  const topZ = bH;
+
+  if (roofType === 'Flat' || roofType === 'Parapet') {
+    drawIsoFace([
+      isoPoint(0, 0, topZ), isoPoint(bW, 0, topZ),
+      isoPoint(bW, bD, topZ), isoPoint(0, bD, topZ)
+    ], 'rgba(40,40,40,0.9)', '#C9A84C');
+
+    // Parapet walls
+    if (roofType === 'Parapet') {
+      const pH = 0.3;
+      // Front parapet
+      drawIsoFace([
+        isoPoint(0,0,topZ), isoPoint(bW,0,topZ),
+        isoPoint(bW,0,topZ+pH), isoPoint(0,0,topZ+pH)
+      ], 'rgba(50,50,50,0.9)', '#8A7438');
+    }
+  } else {
+    // Sloped roof
+    const ridgeZ = topZ + 1;
+    const ridgeMid = bD / 2;
+    drawIsoFace([
+      isoPoint(0,0,topZ), isoPoint(bW,0,topZ),
+      isoPoint(bW, ridgeMid, ridgeZ), isoPoint(0, ridgeMid, ridgeZ)
+    ], 'rgba(80,40,20,0.7)', '#C9A84C');
+    drawIsoFace([
+      isoPoint(0,bD,topZ), isoPoint(bW,bD,topZ),
+      isoPoint(bW, ridgeMid, ridgeZ), isoPoint(0, ridgeMid, ridgeZ)
+    ], 'rgba(60,30,15,0.7)', '#8A7438');
+  }
+
+  // Car porch (if ground floor has it)
+  const rooms = fpData?.ground_floor?.rooms || [];
+  const hasCarPorch = rooms.some(r => r.name?.toLowerCase().includes('car') || r.name?.toLowerCase().includes('porch') || r.name?.toLowerCase().includes('garage'));
+  if (hasCarPorch) {
+    const porchZ = 0;
+    drawIsoFace([
+      isoPoint(-1.2,0,porchZ), isoPoint(0,0,porchZ),
+      isoPoint(0,0,porchZ+1.3), isoPoint(-1.2,0,porchZ+1.3)
+    ], 'rgba(20,20,20,0.6)', 'rgba(201,168,76,0.4)');
+    drawIsoFace([
+      isoPoint(-1.2,0,porchZ+1.3), isoPoint(0,0,porchZ+1.3),
+      isoPoint(0,bD/3,porchZ+1.3), isoPoint(-1.2,bD/3,porchZ+1.3)
+    ], 'rgba(201,168,76,0.1)', 'rgba(201,168,76,0.3)');
+  }
+
+  // Floor labels (right side)
+  for (let f = 0; f < floors; f++) {
+    const labelZ = f * 2 + 1;
+    const p = isoPoint(bW + 0.2, bD / 2, labelZ);
+    ctx.fillStyle = 'rgba(201,168,76,0.7)';
+    ctx.font = '400 11px Inter';
+    ctx.textAlign = 'left';
+    ctx.fillText(f === 0 ? 'Ground Floor' : `${f === 1 ? '1st' : f + 'th'} Floor`, p.x + 8, p.y + 4);
+  }
+
+  // Title & info
+  ctx.fillStyle = '#C9A84C';
+  ctx.font = '500 13px Inter';
+  ctx.textAlign = 'left';
+  ctx.fillText(`3D Isometric View — ${isoData.style || 'Modern'}  |  ${floors} Floor${floors > 1 ? 's' : ''}  |  Roof: ${isoData.roof_type || 'Flat'}`, 24, 24);
+}
+
+// ── Draw Front Elevation ──
+function drawFrontElevation(canvasId, elevData, plotInfo) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = 800, H = 400;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  ctx.fillStyle = '#0A0A0A';
+  ctx.fillRect(0, 0, W, H);
+
+  const features = elevData?.features || [];
+  const padX = 60, padY = 40;
+  const drawW = W - padX * 2;
+  const drawH = H - padY * 2;
+
+  // Sky gradient (subtle)
+  const sky = ctx.createLinearGradient(0, padY, 0, padY + drawH * 0.4);
+  sky.addColorStop(0, 'rgba(30,50,80,0.3)');
+  sky.addColorStop(1, 'rgba(10,10,10,0)');
+  ctx.fillStyle = sky;
+  ctx.fillRect(padX, padY, drawW, drawH * 0.4);
+
+  // Ground line
+  ctx.strokeStyle = 'rgba(201,168,76,0.4)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(padX - 20, padY + drawH);
+  ctx.lineTo(W - padX + 20, padY + drawH);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Main building outline
+  const buildW = drawW * 0.8;
+  const buildH = drawH * 0.75;
+  const buildX = padX + (drawW - buildW) / 2;
+  const buildY = padY + drawH - buildH;
+
+  // Building fill
+  ctx.fillStyle = 'rgba(25,25,25,0.95)';
+  ctx.fillRect(buildX, buildY, buildW, buildH);
+
+  // Building outline
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(buildX, buildY, buildW, buildH);
+
+  // Parapet / roof edge
+  ctx.fillStyle = 'rgba(35,35,35,0.9)';
+  ctx.fillRect(buildX - 10, buildY - 18, buildW + 20, 20);
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(buildX - 10, buildY - 18, buildW + 20, 20);
+
+  // Draw features from AI data
+  features.forEach(feat => {
+    const fx = buildX + (feat.position_x_pct / 100) * buildW - (feat.width_pct / 100) * buildW / 2;
+    const fy = buildY + (feat.position_y_pct / 100) * buildH - (feat.height_pct / 100) * buildH / 2;
+    const fw = (feat.width_pct / 100) * buildW;
+    const fh = (feat.height_pct / 100) * buildH;
+
+    switch(feat.element) {
+      case 'main gate':
+      case 'door':
+        ctx.fillStyle = 'rgba(101,67,33,0.85)';
+        ctx.fillRect(fx, fy, fw, fh);
+        ctx.strokeStyle = '#C9A84C';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(fx, fy, fw, fh);
+        // Door arch
+        ctx.beginPath();
+        ctx.arc(fx + fw/2, fy, fw/2, Math.PI, 0);
+        ctx.strokeStyle = 'rgba(201,168,76,0.5)';
+        ctx.stroke();
+        break;
+      case 'window':
+        ctx.fillStyle = 'rgba(100,160,220,0.25)';
+        ctx.fillRect(fx, fy, fw, fh);
+        ctx.strokeStyle = 'rgba(201,168,76,0.6)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(fx, fy, fw, fh);
+        // Window cross
+        ctx.beginPath();
+        ctx.moveTo(fx + fw/2, fy);
+        ctx.lineTo(fx + fw/2, fy + fh);
+        ctx.moveTo(fx, fy + fh/2);
+        ctx.lineTo(fx + fw, fy + fh/2);
+        ctx.strokeStyle = 'rgba(201,168,76,0.3)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        break;
+      case 'balcony':
+        ctx.fillStyle = 'rgba(30,30,30,0.9)';
+        ctx.fillRect(fx, fy, fw, fh);
+        ctx.strokeStyle = '#C9A84C';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(fx, fy, fw, fh);
+        // Balcony railing
+        for (let r = 0; r < 5; r++) {
+          const rx = fx + (r+0.5) * fw/5;
+          ctx.beginPath();
+          ctx.moveTo(rx, fy);
+          ctx.lineTo(rx, fy + fh * 0.6);
+          ctx.strokeStyle = 'rgba(201,168,76,0.4)';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+        break;
+      case 'column':
+        ctx.fillStyle = 'rgba(40,40,40,0.9)';
+        ctx.fillRect(fx, fy, fw, fh);
+        ctx.strokeStyle = 'rgba(201,168,76,0.5)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(fx, fy, fw, fh);
+        break;
+    }
+
+    // Feature label
+    ctx.fillStyle = 'rgba(154,148,136,0.7)';
+    ctx.font = '400 9px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText(feat.element, fx + fw/2, fy - 4);
+  });
+
+  // If no features from AI, draw default facade
+  if (features.length === 0) {
+    drawDefaultFacade(ctx, buildX, buildY, buildW, buildH);
+  }
+
+  // Dimension lines
+  ctx.strokeStyle = 'rgba(201,168,76,0.3)';
+  ctx.lineWidth = 0.5;
+  ctx.setLineDash([3, 3]);
+  // Width dimension
+  ctx.beginPath();
+  ctx.moveTo(buildX, padY + drawH + 12);
+  ctx.lineTo(buildX + buildW, padY + drawH + 12);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#9A9488';
+  ctx.font = '400 10px Inter';
+  ctx.textAlign = 'center';
+  const widthFt = elevData?.width_ft || (plotInfo?.estimated_sqft ? Math.sqrt(plotInfo.estimated_sqft) : 30);
+  ctx.fillText(`${Math.round(widthFt)} ft`, buildX + buildW/2, padY + drawH + 24);
+
+  // Height dimension
+  ctx.setLineDash([3, 3]);
+  ctx.strokeStyle = 'rgba(201,168,76,0.3)';
+  ctx.beginPath();
+  ctx.moveTo(buildX - 14, buildY);
+  ctx.lineTo(buildX - 14, buildY + buildH);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  const heightFt = elevData?.height_ft || 22;
+  ctx.save();
+  ctx.translate(buildX - 24, buildY + buildH/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText(`${heightFt} ft`, 0, 0);
+  ctx.restore();
+
+  // Title
+  ctx.fillStyle = '#C9A84C';
+  ctx.font = '500 12px Inter';
+  ctx.textAlign = 'left';
+  ctx.fillText(`Front Elevation  |  ${elevData?.style || 'Modern'}  |  Scale: NTS`, padX, 24);
+}
+
+function drawDefaultFacade(ctx, bx, by, bw, bh) {
+  // Main door
+  const dw = bw * 0.12, dh = bh * 0.35;
+  const dx = bx + bw * 0.5 - dw/2, dy = by + bh - dh;
+  ctx.fillStyle = 'rgba(101,67,33,0.85)';
+  ctx.fillRect(dx, dy, dw, dh);
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(dx, dy, dw, dh);
+
+  // Windows (2 per floor, 2 floors)
+  const winPositions = [
+    {x: 0.18, y: 0.2}, {x: 0.72, y: 0.2},
+    {x: 0.18, y: 0.62}, {x: 0.72, y: 0.62}
+  ];
+  winPositions.forEach(wp => {
+    const wx = bx + bw * wp.x, wy = by + bh * wp.y;
+    const ww = bw * 0.12, wh = bh * 0.18;
+    ctx.fillStyle = 'rgba(100,160,220,0.2)';
+    ctx.fillRect(wx, wy, ww, wh);
+    ctx.strokeStyle = 'rgba(201,168,76,0.5)';
+    ctx.lineWidth = 0.8;
+    ctx.strokeRect(wx, wy, ww, wh);
+    ctx.beginPath();
+    ctx.moveTo(wx + ww/2, wy);
+    ctx.lineTo(wx + ww/2, wy + wh);
+    ctx.moveTo(wx, wy + wh/2);
+    ctx.lineTo(wx + ww, wy + wh/2);
+    ctx.strokeStyle = 'rgba(201,168,76,0.25)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  });
+
+  // Floor line
+  ctx.strokeStyle = 'rgba(201,168,76,0.25)';
+  ctx.lineWidth = 0.5;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(bx, by + bh/2);
+  ctx.lineTo(bx + bw, by + bh/2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// ── Draw Side Elevation ──
+function drawSideElevation(canvasId, elevData, plotInfo) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = 800, H = 400;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  ctx.fillStyle = '#0A0A0A';
+  ctx.fillRect(0, 0, W, H);
+
+  const padX = 80, padY = 40;
+  const drawW = W - padX * 2;
+  const drawH = H - padY * 2;
+
+  const buildW = drawW * 0.6;
+  const buildH = drawH * 0.75;
+  const buildX = padX + (drawW - buildW) / 2;
+  const buildY = padY + drawH - buildH;
+
+  // Ground
+  ctx.strokeStyle = 'rgba(201,168,76,0.3)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(padX - 20, padY + drawH);
+  ctx.lineTo(W - padX + 20, padY + drawH);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Building
+  ctx.fillStyle = 'rgba(20,20,20,0.95)';
+  ctx.fillRect(buildX, buildY, buildW, buildH);
+  ctx.strokeStyle = '#8A7438';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(buildX, buildY, buildW, buildH);
+
+  // Parapet
+  ctx.fillStyle = 'rgba(30,30,30,0.9)';
+  ctx.fillRect(buildX - 8, buildY - 16, buildW + 16, 18);
+  ctx.strokeStyle = '#8A7438';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(buildX - 8, buildY - 16, buildW + 16, 18);
+
+  // Side windows
+  const sideWins = [{x:0.25, y:0.22},{x:0.65, y:0.22},{x:0.25, y:0.62},{x:0.65, y:0.62}];
+  sideWins.forEach(wp => {
+    const wx = buildX + buildW * wp.x;
+    const wy = buildY + buildH * wp.y;
+    const ww = buildW * 0.14, wh = buildH * 0.17;
+    ctx.fillStyle = 'rgba(100,160,220,0.15)';
+    ctx.fillRect(wx, wy, ww, wh);
+    ctx.strokeStyle = 'rgba(201,168,76,0.35)';
+    ctx.lineWidth = 0.8;
+    ctx.strokeRect(wx, wy, ww, wh);
+  });
+
+  // Floor line
+  ctx.strokeStyle = 'rgba(201,168,76,0.2)';
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(buildX, buildY + buildH/2);
+  ctx.lineTo(buildX + buildW, buildY + buildH/2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Description
+  if (elevData?.description) {
+    ctx.fillStyle = '#9A9488';
+    ctx.font = '400 11px Inter';
+    ctx.textAlign = 'center';
+    const desc = elevData.description;
+    ctx.fillText(desc.length > 80 ? desc.substring(0,80) + '...' : desc, W/2, H - 10);
+  }
+
+  // Title
+  ctx.fillStyle = '#8A7438';
+  ctx.font = '500 12px Inter';
+  ctx.textAlign = 'left';
+  ctx.fillText('Side Elevation  |  Scale: NTS', padX, 24);
+}
+
+// ── Render Room Table ──
+function renderRoomTable(rooms) {
+  const table = document.getElementById('room-table');
+  if (!rooms.length) { table.innerHTML = ''; return; }
+  table.innerHTML = `
+    <thead><tr>
+      <th>Room</th><th>Local Name</th>
+      <th>Dimensions</th><th>Area</th><th>Features</th>
+    </tr></thead>
+    <tbody>
+      ${rooms.map(r => `<tr>
+        <td class="room-name">${r.name || ''}</td>
+        <td style="font-family:'Noto Nastaliq Urdu',serif;direction:rtl;color:var(--gold)">${r.name_local || ''}</td>
+        <td>${r.width_ft && r.length_ft ? `${r.width_ft}' × ${r.length_ft}'` : 'N/A'}</td>
+        <td>${r.area_sqft ? r.area_sqft + ' sqft' : 'N/A'}</td>
+        <td>${(r.features || []).join(', ') || '—'}</td>
+      </tr>`).join('')}
+    </tbody>
+  `;
+}
+
+// ── Render Elevation Details ──
+function renderElevationDetails(elevs) {
+  const front = elevs?.front || {};
+  const side = elevs?.side || {};
+  document.getElementById('elev-details').innerHTML = `
+    <div class="elev-card">
+      <h4>Front Elevation</h4>
+      <p>${front.description || ''}</p>
+      <div class="material-tags">${(front.materials || []).map(m => `<span class="mtag">${m}</span>`).join('')}</div>
+    </div>
+    <div class="elev-card">
+      <h4>Side Elevation</h4>
+      <p>${side.description || ''}</p>
+      <p style="margin-top:8px;font-size:0.78rem;color:var(--gold);">${front.color_scheme || ''}</p>
+    </div>
+  `;
+}
+
+// ── Render Construction Notes ──
+function renderConstructionNotes(cn) {
+  if (!cn) return;
+  document.getElementById('const-grid').innerHTML = `
+    <div class="const-card">
+      <h4>Structural Tips</h4>
+      <ul>${(cn.structural_tips || []).map(t => `<li>${t}</li>`).join('')}</ul>
+    </div>
+    <div class="const-card">
+      <h4>Suggested Materials</h4>
+      <ul>${(cn.material_suggestions || []).map(m => `<li>${m}</li>`).join('')}</ul>
+    </div>
+    <div class="const-card">
+      <h4>Estimates</h4>
+      <ul>
+        <li><strong style="color:var(--gold)">Cost:</strong> ${cn.estimated_cost_range || 'N/A'}</li>
+        <li><strong style="color:var(--gold)">Timeline:</strong> ${cn.timeline || 'N/A'}</li>
+      </ul>
+    </div>
+  `;
+}
+
+// ── PDF Download ──
+async function downloadPDF() {
+  if (!drawingData) { alert('Please generate drawings first.'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a3', orientation: 'landscape' });
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
+  const margin = 36;
+  const gold = [201, 168, 76];
+  const black = [10, 10, 10];
+  const gray = [100, 96, 88];
+
+  function header(title, pageNum) {
+    doc.setFillColor(...black);
+    doc.rect(0, 0, W, 52, 'F');
+    doc.setTextColor(...gold);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('RANDERIX AI', margin, 34);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.text(title, W/2, 34, { align: 'center' });
+    doc.setTextColor(...gray);
+    doc.setFontSize(9);
+    doc.text(`Page ${pageNum}  |  www.randerixai.com  |  +92 329 4839897`, W - margin, 34, { align: 'right' });
+  }
+
+  function addCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return null;
+    return canvas.toDataURL('image/png');
+  }
+
+  // Page 1 — Cover + Info
+  header('Architectural Drawing Set', 1);
+  const pi = drawingData.plot_info || {};
+  doc.setTextColor(...gold);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.text('Complete Architectural Drawings', W/2, 120, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(14);
+  doc.setTextColor(...gray);
+  doc.text('AI-Generated from Hand Sketch  |  Randerix AI Studio  |  Est. 1985', W/2, 148, { align: 'center' });
+
+  const infoItems = [
+    ['Plot Size', pi.estimated_size || 'N/A'],
+    ['Total Area', pi.estimated_sqft ? pi.estimated_sqft + ' sqft' : 'N/A'],
+    ['Shape', pi.shape || 'N/A'],
+    ['Orientation', pi.orientation || 'N/A'],
+    ['Style', drawingData.isometric_3d?.style || 'N/A'],
+    ['Floors', drawingData.floor_plan_2d?.total_floors || 1]
+  ];
+
+  const cardW = (W - margin * 2 - 50) / 3;
+  infoItems.forEach((item, i) => {
+    const col = i % 3, row = Math.floor(i / 3);
+    const x = margin + col * (cardW + 25);
+    const y = 185 + row * 90;
+    doc.setFillColor(20, 20, 20);
+    doc.rect(x, y, cardW, 72, 'F');
+    doc.setTextColor(...gold);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.text(String(item[1]), x + cardW/2, y + 34, { align: 'center' });
+    doc.setTextColor(...gray);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text(item[0].toUpperCase(), x + cardW/2, y + 52, { align: 'center' });
+  });
+
+  // Interpretation
+  doc.setTextColor(...gray);
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(11);
+  const interpLines = doc.splitTextToSize(drawingData.interpretation || '', W - margin * 2);
+  doc.text(interpLines, W/2, 400, { align: 'center' });
+
+  // Page 2 — 2D Floor Plan
+  doc.addPage('a3', 'landscape');
+  header('2D Floor Plan', 2);
+  const img2d = addCanvas('canvas-2d-ground');
+  if (img2d) {
+    doc.addImage(img2d, 'PNG', margin, 70, W - margin * 2, (W - margin * 2) * 0.625);
+  }
+
+  // Page 3 — 3D Isometric
+  doc.addPage('a3', 'landscape');
+  header('3D Isometric View', 3);
+  const img3d = addCanvas('canvas-3d');
+  if (img3d) {
+    doc.addImage(img3d, 'PNG', margin, 70, W - margin * 2, (W - margin * 2) * 0.65);
+  }
+
+  // Page 4 — Elevations
+  doc.addPage('a3', 'landscape');
+  header('Elevations — Front & Side', 4);
+  const imgFront = addCanvas('canvas-elev-front');
+  const imgSide = addCanvas('canvas-elev-side');
+  const elevH = (H - 80) / 2 - 16;
+  if (imgFront) doc.addImage(imgFront, 'PNG', margin, 68, W - margin * 2, elevH);
+  if (imgSide) doc.addImage(imgSide, 'PNG', margin, 68 + elevH + 16, W - margin * 2, elevH);
+
+  // Page 5 — Room Schedule + Construction Notes
+  doc.addPage('a3', 'landscape');
+  header('Room Schedule & Construction Notes', 5);
+  let y = 80;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...gold);
+  doc.text('Room Schedule', margin, y);
+  y += 20;
+
+  const rooms = drawingData.floor_plan_2d?.ground_floor?.rooms || [];
+  rooms.forEach(r => {
+    if (y > H - 80) { doc.addPage('a3', 'landscape'); header('Room Schedule (cont.)', '5b'); y = 80; }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(245, 240, 232);
+    doc.text(r.name || '', margin, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...gray);
+    doc.text(`${r.width_ft || '?'}' × ${r.length_ft || '?'}' = ${r.area_sqft || '?'} sqft  |  ${r.position || ''}`, margin + 140, y);
+    y += 18;
+  });
+
+  y += 16;
+  const cn = drawingData.construction_notes || {};
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...gold);
+  doc.text('Construction Notes', margin, y);
+  y += 18;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(245, 240, 232);
+  doc.text(`Estimated Cost: ${cn.estimated_cost_range || 'N/A'}  |  Timeline: ${cn.timeline || 'N/A'}`, margin, y);
+  y += 20;
+  (cn.structural_tips || []).forEach(tip => {
+    doc.setFontSize(10);
+    doc.setTextColor(...gray);
+    const lines = doc.splitTextToSize('• ' + tip, W - margin * 2);
+    doc.text(lines, margin, y);
+    y += lines.length * 13 + 4;
+  });
+
+  // Disclaimer
+  y += 16;
+  doc.setDrawColor(...gold);
+  doc.line(margin, y, W - margin, y);
+  y += 14;
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(9);
+  doc.setTextColor(...gray);
+  const disc = doc.splitTextToSize('This is an AI-generated conceptual architectural drawing set based on a hand-drawn sketch. It is intended for preliminary planning and visualization purposes only. Not a substitute for professional engineering drawings, structural calculations, or municipal approval documents. For construction-ready CAD drawings, please consult Architect Rimsha at Randerix AI Studio.', W - margin * 2);
+  doc.text(disc, margin, y);
+
+  doc.save('Randerix-AI-Architectural-Drawings.pdf');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "randerix-ai",
+  "version": "1.0.0",
+  "description": "Randerix AI - Pakistan's first AI-powered architecture studio",
+  "private": true,
+  "engines": {
+    "node": "18"
+  }
+}

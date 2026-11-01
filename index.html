@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Randerix AI — Pakistan's #1 AI Architecture Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --black:#080808;
+  --black2:#0f0f0f;
+  --black3:#141414;
+  --gold:#C9A84C;
+  --gold2:#E8C97E;
+  --gold3:#f0d98a;
+  --white:#F5F0E8;
+  --white2:#d4cfc7;
+  --gray:#2a2a2a;
+  --gray2:#1a1a1a;
+  --font-display:'Cormorant Garamond',serif;
+  --font-body:'Inter',sans-serif;
+  --font-urdu:'Noto Nastaliq Urdu',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);overflow-x:hidden;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--black2);}
+::-webkit-scrollbar-thumb{background:var(--gold);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,0.15);}
+.nav-logo{font-family:var(--font-display);font-size:1.6rem;font-weight:600;color:var(--gold);letter-spacing:0.05em;text-decoration:none;}
+.nav-logo span{color:var(--white);font-weight:300;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{color:var(--white2);font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:color 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{background:var(--gold);color:var(--black);padding:10px 24px;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:1px solid var(--gold);}
+.nav-cta:hover{background:transparent;color:var(--gold);}
+.nav-mobile-btn{display:none;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:0 60px;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(201,168,76,0.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(201,168,76,0.04) 0%,transparent 50%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px);background-size:60px 60px;opacity:0.5;}
+.hero-content{position:relative;z-index:2;max-width:700px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);padding:8px 16px;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.5);}}
+.hero h1{font-family:var(--font-display);font-size:clamp(3rem,6vw,5.5rem);font-weight:300;line-height:1.1;margin-bottom:16px;color:var(--white);}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-urdu{font-family:var(--font-urdu);font-size:1.3rem;color:var(--gold2);direction:rtl;margin-bottom:24px;opacity:0.8;}
+.hero-sub{font-size:1rem;color:var(--white2);line-height:1.7;max-width:500px;margin-bottom:48px;font-weight:300;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{background:var(--gold);color:var(--black);padding:16px 36px;font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border:1px solid var(--gold);transition:all 0.3s;}
+.btn-primary:hover{background:transparent;color:var(--gold);}
+.btn-ghost{background:transparent;color:var(--white);padding:16px 36px;font-size:0.8rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(255,255,255,0.2);transition:all 0.3s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.hero-right{position:absolute;right:60px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:16px;}
+.hero-stat{text-align:right;padding:20px 24px;border:1px solid rgba(201,168,76,0.2);background:rgba(201,168,76,0.03);}
+.hero-stat .num{font-family:var(--font-display);font-size:2.4rem;color:var(--gold);font-weight:300;line-height:1;}
+.hero-stat .label{font-size:0.7rem;color:var(--white2);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
+
+/* SECTION BASE */
+section{padding:100px 60px;}
+.section-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.section-eyebrow span{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);}
+.section-eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.4),transparent);}
+.section-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.5rem);font-weight:300;line-height:1.2;color:var(--white);margin-bottom:16px;}
+.section-title em{font-style:italic;color:var(--gold);}
+.section-sub{font-size:0.95rem;color:var(--white2);line-height:1.7;font-weight:300;}
+
+/* AI TOOLS SECTION */
+.ai-tools{background:var(--black2);}
+.ai-tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;margin-top:60px;}
+.ai-tool-card{background:var(--black3);padding:40px;border:1px solid rgba(201,168,76,0.1);position:relative;overflow:hidden;cursor:pointer;transition:all 0.4s;text-decoration:none;display:block;}
+.ai-tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.06),transparent);opacity:0;transition:opacity 0.4s;}
+.ai-tool-card:hover{border-color:rgba(201,168,76,0.4);transform:translateY(-2px);}
+.ai-tool-card:hover::before{opacity:1;}
+.ai-tool-icon{font-size:2.5rem;margin-bottom:20px;display:block;}
+.ai-tool-title{font-family:var(--font-display);font-size:1.5rem;font-weight:400;color:var(--white);margin-bottom:8px;}
+.ai-tool-urdu{font-family:var(--font-urdu);font-size:0.85rem;color:var(--gold);direction:rtl;margin-bottom:12px;}
+.ai-tool-desc{font-size:0.85rem;color:var(--white2);line-height:1.6;font-weight:300;}
+.ai-tool-arrow{position:absolute;top:40px;right:40px;color:var(--gold);font-size:1.2rem;opacity:0;transition:all 0.3s;transform:translateX(-8px);}
+.ai-tool-card:hover .ai-tool-arrow{opacity:1;transform:translateX(0);}
+
+/* FEATURES */
+.features-row{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px;}
+.features-list{display:flex;flex-direction:column;gap:24px;}
+.feature-item{display:flex;gap:20px;padding:24px;border-left:2px solid transparent;transition:border-color 0.3s;}
+.feature-item:hover{border-left-color:var(--gold);background:rgba(201,168,76,0.03);}
+.feature-num{font-family:var(--font-display);font-size:1.8rem;color:rgba(201,168,76,0.3);font-weight:300;min-width:50px;}
+.feature-text h3{font-size:1rem;font-weight:500;color:var(--white);margin-bottom:6px;}
+.feature-text p{font-size:0.85rem;color:var(--white2);line-height:1.6;font-weight:300;}
+.features-visual{background:var(--black2);border:1px solid rgba(201,168,76,0.15);padding:48px;position:relative;}
+.features-visual-inner{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;}
+.arch-diagram{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;}
+.arch-block{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);height:40px;transition:all 0.3s;}
+.arch-block:hover{background:rgba(201,168,76,0.25);}
+.arch-block.tall{height:80px;}
+.arch-block.gold{background:rgba(201,168,76,0.3);}
+.features-visual-label{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-align:center;}
+
+/* SERVICES */
+.services{background:var(--black3);}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(201,168,76,0.1);margin-top:60px;}
+.service-card{background:var(--black3);padding:48px 40px;transition:background 0.3s;}
+.service-card:hover{background:rgba(201,168,76,0.04);}
+.service-icon{width:48px;height:48px;border:1px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:24px;color:var(--gold);}
+.service-title{font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:8px;}
+.service-urdu{font-family:var(--font-urdu);font-size:0.8rem;color:var(--gold);direction:rtl;margin-bottom:12px;}
+.service-desc{font-size:0.85rem;color:var(--white2);line-height:1.7;font-weight:300;}
+.service-price{margin-top:20px;font-size:0.75rem;color:var(--gold);letter-spacing:0.1em;border-top:1px solid rgba(201,168,76,0.15);padding-top:16px;}
+
+/* PORTFOLIO */
+.portfolio{background:var(--black2);}
+.portfolio-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto;gap:2px;margin-top:60px;}
+.portfolio-item{background:var(--gray2);position:relative;overflow:hidden;cursor:pointer;}
+.portfolio-item.large{grid-row:span 2;}
+.portfolio-visual{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--gray2),var(--gray));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.portfolio-visual::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.15),transparent);}
+.portfolio-visual svg{opacity:0.3;color:var(--gold);}
+.portfolio-item.large .portfolio-visual{aspect-ratio:unset;height:100%;}
+.portfolio-overlay{position:absolute;inset:0;background:rgba(8,8,8,0.7);opacity:0;transition:opacity 0.4s;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;}
+.portfolio-item:hover .portfolio-overlay{opacity:1;}
+.portfolio-overlay h3{font-family:var(--font-display);font-size:1.3rem;color:var(--white);}
+.portfolio-overlay p{font-size:0.75rem;color:var(--gold);letter-spacing:0.1em;}
+.portfolio-tag{position:absolute;top:16px;left:16px;background:var(--gold);color:var(--black);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;padding:4px 10px;text-transform:uppercase;}
+
+/* BLOG */
+.blog-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:60px;}
+.blog-card{background:var(--black3);border:1px solid rgba(201,168,76,0.08);padding:36px;transition:all 0.3s;text-decoration:none;display:block;}
+.blog-card:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.03);}
+.blog-tag{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.blog-title{font-family:var(--font-display);font-size:1.2rem;color:var(--white);margin-bottom:8px;line-height:1.3;}
+.blog-meta{font-size:0.75rem;color:var(--white2);margin-top:auto;padding-top:20px;border-top:1px solid rgba(201,168,76,0.1);}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--black);}
+.testimonials-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:60px;}
+.testimonial-card{background:var(--black3);padding:40px;border:1px solid rgba(201,168,76,0.1);}
+.testimonial-quote{font-family:var(--font-display);font-size:1.2rem;font-style:italic;color:var(--white);line-height:1.6;margin-bottom:24px;}
+.testimonial-quote::before{content:'"';color:var(--gold);font-size:3rem;line-height:0;vertical-align:-1rem;margin-right:8px;}
+.testimonial-author{display:flex;align-items:center;gap:16px;}
+.testimonial-avatar{width:44px;height:44px;background:rgba(201,168,76,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.2rem;color:var(--gold);}
+.testimonial-name{font-size:0.9rem;font-weight:500;color:var(--white);}
+.testimonial-loc{font-size:0.75rem;color:var(--gold);}
+
+/* CTA SECTION */
+.cta-section{background:var(--black2);text-align:center;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(201,168,76,0.08),transparent 70%);}
+.cta-section h2{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;color:var(--white);margin-bottom:16px;position:relative;}
+.cta-section h2 em{color:var(--gold);font-style:italic;}
+.cta-urdu{font-family:var(--font-urdu);font-size:1.2rem;color:var(--gold);direction:rtl;margin-bottom:24px;position:relative;}
+.cta-section p{font-size:0.95rem;color:var(--white2);margin-bottom:40px;position:relative;}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid rgba(201,168,76,0.15);padding:60px 60px 30px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px;}
+.footer-brand .logo{font-family:var(--font-display);font-size:1.8rem;color:var(--gold);margin-bottom:16px;display:block;}
+.footer-brand p{font-size:0.85rem;color:var(--white2);line-height:1.7;font-weight:300;margin-bottom:20px;}
+.footer-brand .urdu-tag{font-family:var(--font-urdu);font-size:0.9rem;color:var(--gold);direction:rtl;}
+.footer-col h4{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul li a{font-size:0.85rem;color:var(--white2);text-decoration:none;transition:color 0.3s;font-weight:300;}
+.footer-col ul li a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid rgba(201,168,76,0.1);padding-top:30px;display:flex;justify-content:space-between;align-items:center;}
+.footer-bottom p{font-size:0.75rem;color:var(--white2);}
+.whatsapp-btn{position:fixed;bottom:30px;right:30px;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;z-index:999;box-shadow:0 4px 20px rgba(37,211,102,0.4);animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+
+/* STATS ROW */
+.stats-row{background:var(--gold);padding:40px 60px;}
+.stats-inner{display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:24px;}
+.stat-item{text-align:center;}
+.stat-item .num{font-family:var(--font-display);font-size:2.8rem;color:var(--black);font-weight:600;line-height:1;}
+.stat-item .label{font-size:0.75rem;color:rgba(8,8,8,0.7);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .nav-mobile-btn{display:block;}
+  .hero{padding:120px 24px 60px;}
+  .hero-right{display:none;}
+  section{padding:70px 24px;}
+  .ai-tools-grid{grid-template-columns:1fr;}
+  .features-row{grid-template-columns:1fr;}
+  .features-visual{display:none;}
+  .services-grid{grid-template-columns:1fr;}
+  .portfolio-grid{grid-template-columns:1fr;}
+  .portfolio-item.large{grid-row:auto;}
+  .blog-grid{grid-template-columns:1fr;}
+  .testimonials-grid{grid-template-columns:1fr;}
+  footer{padding:40px 24px 20px;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+  .stats-row{padding:30px 24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/923294839897?text=Hello%20Randerix%20AI%2C%20I%20need%20your%20services." class="whatsapp-btn" target="_blank" title="Chat on WhatsApp">💬</a>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">RANDERIX <span>AI</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="ai-tools.html">AI Tools</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Free Consultation</a>
+  <button class="nav-mobile-btn">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🏆 Pakistan's #1 AI Architecture Studio</div>
+    <h1>Design Smarter.<br/>Build <em>Faster.</em><br/>Live Better.</h1>
+    <p class="hero-urdu">پاکستان کا پہلا AI-powered آرکیٹیکچر اسٹوڈیو</p>
+    <p class="hero-sub">Randerix AI combines 40+ years of architecture expertise with cutting-edge artificial intelligence — delivering instant cost estimates, AI floor plans, and virtual consultations for Pakistan and UAE.</p>
+    <div class="hero-btns">
+      <a href="ai-tools.html" class="btn-primary">Try AI Tools Free →</a>
+      <a href="portfolio.html" class="btn-ghost">View Portfolio</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat"><div class="num">500+</div><div class="label">Projects Built</div></div>
+    <div class="hero-stat"><div class="num">40+</div><div class="label">Years Experience</div></div>
+    <div class="hero-stat"><div class="num">98%</div><div class="label">Client Satisfaction</div></div>
+    <div class="hero-stat"><div class="num">3</div><div class="label">Countries Served</div></div>
+  </div>
+</section>
+
+<!-- STATS ROW -->
+<div class="stats-row">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="num">500+</div><div class="label">Projects Delivered</div></div>
+    <div class="stat-item"><div class="num">40+</div><div class="label">Years of Excellence</div></div>
+    <div class="stat-item"><div class="num">PKR 2B+</div><div class="label">Construction Value</div></div>
+    <div class="stat-item"><div class="num">98%</div><div class="label">Client Satisfaction</div></div>
+    <div class="stat-item"><div class="num">3</div><div class="label">Countries</div></div>
+  </div>
+</div>
+
+<!-- AI TOOLS -->
+<section class="ai-tools">
+  <div class="section-eyebrow"><span>AI-Powered Features</span></div>
+  <h2 class="section-title">Pakistan کا پہلا<br/><em>AI Architecture Platform</em></h2>
+  <p class="section-sub">Five powerful AI tools — all free to try. No signup needed.</p>
+  <div class="ai-tools-grid">
+    <a href="ai-tools.html#cost-estimator" class="ai-tool-card">
+      <span class="ai-tool-icon">💰</span>
+      <span class="ai-tool-arrow">→</span>
+      <h3 class="ai-tool-title">AI Cost Estimator</h3>
+      <p class="ai-tool-urdu">تعمیراتی لاگت کا تخمینہ</p>
+      <p class="ai-tool-desc">Get instant construction cost estimates for any project size. Enter marla/kanal, city, and finishing level — AI calculates material, labor, and total costs in seconds.</p>
+    </a>
+    <a href="ai-tools.html#floor-plan" class="ai-tool-card">
+      <span class="ai-tool-icon">🏠</span>
+      <span class="ai-tool-arrow">→</span>
+      <h3 class="ai-tool-title">AI Floor Plan Generator</h3>
+      <p class="ai-tool-urdu">فلور پلان جنریٹر</p>
+      <p class="ai-tool-desc">Describe your dream home in plain Urdu or English. Our AI generates optimal floor plan recommendations with room layouts, dimensions, and space optimization tips.</p>
+    </a>
+    <a href="ai-tools.html#interior" class="ai-tool-card">
+      <span class="ai-tool-icon">🛋️</span>
+      <span class="ai-tool-arrow">→</span>
+      <h3 class="ai-tool-title">AI Interior Design Advisor</h3>
+      <p class="ai-tool-urdu">انٹیریئر ڈیزائن مشیر</p>
+      <p class="ai-tool-desc">Tell us your style, budget and room type. Get personalized color palettes, furniture suggestions, and Pakistani market-specific interior design recommendations.</p>
+    </a>
+    <a href="ai-tools.html#chatbot" class="ai-tool-card">
+      <span class="ai-tool-icon">🤖</span>
+      <span class="ai-tool-arrow">→</span>
+      <h3 class="ai-tool-title">AI Architecture Consultant</h3>
+      <p class="ai-tool-urdu">AI آرکیٹیکٹ سے بات کریں</p>
+      <p class="ai-tool-desc">Chat with our AI trained on Pakistan building codes, NOC requirements, and construction best practices. Ask anything in Urdu or English — available 24/7.</p>
+    </a>
+    <a href="ai-tools.html#visualizer" class="ai-tool-card">
+      <span class="ai-tool-icon">🎨</span>
+      <span class="ai-tool-arrow">→</span>
+      <h3 class="ai-tool-title">3D Vision Advisor</h3>
+      <p class="ai-tool-urdu">تھری ڈی وژن</p>
+      <p class="ai-tool-desc">Upload your plot dimensions and get AI-generated 3D elevation concept descriptions. Understand how your future home will look before a single brick is laid.</p>
+    </a>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section style="background:var(--black);">
+  <div class="section-eyebrow"><span>Why Randerix AI</span></div>
+  <h2 class="section-title">Architecture Meets<br/><em>Intelligence</em></h2>
+  <div class="features-row">
+    <div class="features-list">
+      <div class="feature-item">
+        <div class="feature-num">I</div>
+        <div class="feature-text">
+          <h3>Bilingual AI — Urdu & English</h3>
+          <p>Our AI understands your needs in Urdu or English. Ask questions in your language, get expert answers instantly. No language barrier in architecture.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">II</div>
+        <div class="feature-text">
+          <h3>Pakistan-Specific Knowledge</h3>
+          <p>Unlike global tools, our AI is trained on Pakistani building codes, material prices (Faisalabad, Lahore, Islamabad, Karachi), and local NOC requirements.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">III</div>
+        <div class="feature-text">
+          <h3>Architect Rimsha — Behind Every AI</h3>
+          <p>40+ years of expertise validates every AI output. You get machine speed with human wisdom. Free consultation with Architect Rimsha for complex projects.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">IV</div>
+        <div class="feature-text">
+          <h3>Hub71 & UAE Ready</h3>
+          <p>Our platform serves Pakistani diaspora in UAE with remote consultations, Dubai-Pakistan construction coordination, and NRP investment project planning.</p>
+        </div>
+      </div>
+    </div>
+    <div class="features-visual">
+      <div class="features-visual-inner">
+        <div class="arch-diagram">
+          <div class="arch-block gold"></div>
+          <div class="arch-block tall"></div>
+          <div class="arch-block"></div>
+          <div class="arch-block"></div>
+          <div class="arch-block gold"></div>
+          <div class="arch-block tall"></div>
+          <div class="arch-block tall"></div>
+          <div class="arch-block"></div>
+          <div class="arch-block gold"></div>
+        </div>
+        <p class="features-visual-label">AI-Generated Floor Plan Preview</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="section-eyebrow"><span>Our Services</span></div>
+  <h2 class="section-title">Complete Architecture<br/><em>Solutions</em></h2>
+  <p class="section-sub">From plot to paradise — we handle everything.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🏗️</div>
+      <h3 class="service-title">Residential Architecture</h3>
+      <p class="service-urdu">رہائشی آرکیٹیکچر</p>
+      <p class="service-desc">5 Marla to 1 Kanal+ custom home design, floor plans, 3D elevations, complete construction supervision.</p>
+      <div class="service-price">Starting PKR 50,000 / project</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏢</div>
+      <h3 class="service-title">Commercial Design</h3>
+      <p class="service-urdu">کمرشل ڈیزائن</p>
+      <p class="service-desc">Offices, plazas, retail spaces, restaurants — complete commercial architecture with NOC assistance.</p>
+      <div class="service-price">Starting PKR 100,000 / project</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🛋️</div>
+      <h3 class="service-title">Interior Design</h3>
+      <p class="service-urdu">انٹیریئر ڈیزائن</p>
+      <p class="service-desc">Drawing room, bedroom, kitchen, bathroom — luxury interiors at every budget. Modular to traditional.</p>
+      <div class="service-price">Starting PKR 30,000 / room</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📐</div>
+      <h3 class="service-title">3D Visualization</h3>
+      <p class="service-urdu">تھری ڈی ویژوالائزیشن</p>
+      <p class="service-desc">Photorealistic exterior and interior 3D renders. See your project before construction begins.</p>
+      <div class="service-price">Starting PKR 15,000 / render</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🌍</div>
+      <h3 class="service-title">UAE Remote Consultation</h3>
+      <p class="service-urdu">یو اے ای ریموٹ کنسلٹیشن</p>
+      <p class="service-desc">Pakistani diaspora in UAE can plan, design and supervise Pakistan construction remotely via our AI platform.</p>
+      <div class="service-price">Starting AED 500 / project</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📋</div>
+      <h3 class="service-title">NOC & Approvals</h3>
+      <p class="service-urdu">این او سی و منظوری</p>
+      <p class="service-desc">Complete building permit, NOC, and LDA/FDA/CDA approval assistance across major Pakistani cities.</p>
+      <div class="service-price">Starting PKR 25,000 / project</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio">
+  <div class="section-eyebrow"><span>Our Work</span></div>
+  <h2 class="section-title">Selected <em>Projects</em></h2>
+  <p class="section-sub">500+ projects delivered across Pakistan and UAE.</p>
+  <div class="portfolio-grid">
+    <div class="portfolio-item large">
+      <div class="portfolio-visual" style="background:linear-gradient(135deg,#1a1a1a,#2a2a1a);height:500px;">
+        <div style="text-align:center;color:rgba(201,168,76,0.4);font-family:'Cormorant Garamond',serif;font-size:5rem;">🏛️</div>
+      </div>
+      <div class="portfolio-overlay">
+        <h3>1 Kanal Modern Villa — Faisalabad</h3>
+        <p>Residential · 2024</p>
+      </div>
+      <div class="portfolio-tag">Featured</div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-visual" style="height:240px;">
+        <div style="font-size:3rem;color:rgba(201,168,76,0.4);">🏢</div>
+      </div>
+      <div class="portfolio-overlay"><h3>Commercial Plaza — DHA Lahore</h3><p>Commercial · 2024</p></div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-visual" style="height:240px;">
+        <div style="font-size:3rem;color:rgba(201,168,76,0.4);">🏠</div>
+      </div>
+      <div class="portfolio-overlay"><h3>10 Marla Modern Home — Islamabad</h3><p>Residential · 2023</p></div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-visual" style="height:240px;">
+        <div style="font-size:3rem;color:rgba(201,168,76,0.4);">🛋️</div>
+      </div>
+      <div class="portfolio-overlay"><h3>Luxury Interior — Bahria Town Lahore</h3><p>Interior · 2024</p></div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-visual" style="height:240px;">
+        <div style="font-size:3rem;color:rgba(201,168,76,0.4);">🏗️</div>
+      </div>
+      <div class="portfolio-overlay"><h3>5 Marla Smart Home — Faisalabad</h3><p>Residential · 2023</p></div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:40px;">
+    <a href="portfolio.html" class="btn-ghost">View All Projects →</a>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section style="background:var(--black3);">
+  <div class="section-eyebrow"><span>Knowledge Hub</span></div>
+  <h2 class="section-title">Architecture<br/><em>Insights</em></h2>
+  <div class="blog-grid">
+    <a href="blog.html" class="blog-card">
+      <div class="blog-tag">Architecture Tips</div>
+      <h3 class="blog-title">5 Marla House Design in Pakistan: Complete Guide 2025</h3>
+      <p style="font-size:0.85rem;color:var(--white2);line-height:1.6;font-weight:300;">Floor plans, costs, modern trends for 5 marla homes across Pakistan's top cities.</p>
+      <div class="blog-meta">June 2025 · 8 min read · 2.4k views</div>
+    </a>
+    <a href="blog.html" class="blog-card">
+      <div class="blog-tag">Construction Guide</div>
+      <h3 class="blog-title">Construction Cost Per Sq Ft Pakistan 2025 — Full Breakdown</h3>
+      <p style="font-size:0.85rem;color:var(--white2);line-height:1.6;font-weight:300;">Updated rates for Faisalabad, Lahore, Islamabad, Karachi — grey to full finishing.</p>
+      <div class="blog-meta">May 2025 · 9 min read · 3.1k views</div>
+    </a>
+    <a href="blog.html" class="blog-card">
+      <div class="blog-tag">Interior Design</div>
+      <h3 class="blog-title">Top Interior Design Trends Pakistan 2025 — What's In</h3>
+      <p style="font-size:0.85rem;color:var(--white2);line-height:1.6;font-weight:300;">Luxury minimalism to bold textures — the trends dominating Pakistani homes this year.</p>
+      <div class="blog-meta">April 2025 · 5 min read · 1.8k views</div>
+    </a>
+  </div>
+  <div style="text-align:center;margin-top:40px;"><a href="blog.html" class="btn-ghost">Read All Articles →</a></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-eyebrow"><span>Client Stories</span></div>
+  <h2 class="section-title">What Our <em>Clients Say</em></h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <p class="testimonial-quote">Randerix AI نے میری تعمیراتی لاگت کا ایک منٹ میں حساب لگا دیا۔ بالکل درست نکلی۔ یہ واقعی پاکستان کی سب سے بہترین architecture service ہے۔</p>
+      <div class="testimonial-author"><div class="testimonial-avatar">A</div><div><div class="testimonial-name">Ahmed Raza</div><div class="testimonial-loc">Faisalabad · 1 Kanal Villa</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-quote">Being in Dubai, I needed someone reliable for my Pakistan project. Randerix AI's remote consultation was flawless. Architect Rimsha understood exactly what I wanted.</p>
+      <div class="testimonial-author"><div class="testimonial-avatar">S</div><div><div class="testimonial-name">Sana Malik</div><div class="testimonial-loc">Dubai, UAE · 10 Marla Home</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-quote">AI cost estimator نے مجھے PKR 8 لاکھ بچائے — صرف غلط contractor کے ساتھ sign کرنے سے بچا کر۔ یہ tool ہر پاکستانی کے لیے ضروری ہے۔</p>
+      <div class="testimonial-author"><div class="testimonial-avatar">M</div><div><div class="testimonial-name">Muhammad Ali</div><div class="testimonial-loc">Lahore · 5 Marla House</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-quote">The interior design AI suggested a color palette I never would have thought of — it transformed my drawing room completely. Professional, fast, and affordable.</p>
+      <div class="testimonial-author"><div class="testimonial-avatar">F</div><div><div class="testimonial-name">Fatima Khurshid</div><div class="testimonial-loc">Islamabad · Apartment Interior</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to Build Your<br/><em>Dream Project?</em></h2>
+  <p class="cta-urdu">آج ہی مفت مشاورت بُک کریں</p>
+  <p>Free consultation with Architect Rimsha. No obligation. 100% free.</p>
+  <div class="cta-btns">
+    <a href="ai-tools.html" class="btn-primary">Try AI Tools Free →</a>
+    <a href="contact.html" class="btn-ghost">Book Consultation</a>
+    <a href="https://wa.me/923294839897" class="btn-ghost" target="_blank">💬 WhatsApp Now</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">RANDERIX AI</span>
+      <p>Pakistan's first AI-powered architecture studio. Combining 40+ years of expertise with cutting-edge artificial intelligence to serve Pakistan and UAE.</p>
+      <p class="urdu-tag">پاکستان کا پہلا AI آرکیٹیکچر اسٹوڈیو — ۱۹۸۵ سے</p>
+    </div>
+    <div class="footer-col">
+      <h4>AI Tools</h4>
+      <ul>
+        <li><a href="ai-tools.html#cost-estimator">Cost Estimator</a></li>
+        <li><a href="ai-tools.html#floor-plan">Floor Plan AI</a></li>
+        <li><a href="ai-tools.html#interior">Interior Advisor</a></li>
+        <li><a href="ai-tools.html#chatbot">AI Consultant</a></li>
+        <li><a href="ai-tools.html#visualizer">3D Visualizer</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Residential</a></li>
+        <li><a href="services.html">Commercial</a></li>
+        <li><a href="services.html">Interior Design</a></li>
+        <li><a href="services.html">3D Visualization</a></li>
+        <li><a href="services.html">NOC & Approvals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+923294839897">+92 329 4839897</a></li>
+        <li><a href="https://wa.me/923294839897" target="_blank">WhatsApp</a></li>
+        <li><a href="about.html">About Rimsha</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Randerix AI Studio · Pakistan · Est. 1985 · All rights reserved.</p>
+    <p style="color:var(--gold);font-size:0.75rem;">Hub71 Partner · UAE Serving · Faisalabad HQ</p>
+  </div>
+</footer>
+
+<script>
+// Mobile menu
+document.querySelector('.nav-mobile-btn').addEventListener('click', function(){
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.flexDirection = 'column';
+  links.style.position = 'absolute';
+  links.style.top = '70px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = 'rgba(8,8,8,0.98)';
+  links.style.padding = '20px';
+  links.style.gap = '16px';
+  links.style.borderBottom = '1px solid rgba(201,168,76,0.2)';
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.ai-tool-card, .service-card, .blog-card, .testimonial-card').forEach(el=>{
+  el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='all 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

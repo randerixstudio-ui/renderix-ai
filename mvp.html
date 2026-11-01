@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Randerix AI — Pakistan's First AI Architecture Platform | Free Cost Estimate</title>
+<meta name="description" content="Get instant construction cost estimate for your Pakistan home. Free AI-powered architecture consultation. Faisalabad, Lahore, Islamabad, Karachi. اردو میں بات کریں۔"/>
+<meta property="og:title" content="Randerix AI — Free AI Construction Cost Estimate"/>
+<meta property="og:description" content="Pakistan ka pehla AI architecture platform. Apne ghar ki cost abhi janein — bilkul free."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS ── */
+:root{
+  --bg:#0A0A0A;
+  --bg2:#111111;
+  --bg3:#181818;
+  --gold:#C9A84C;
+  --gold2:#E8C97E;
+  --gold3:#f5e4a8;
+  --white:#F5F0E8;
+  --dim:#9A9488;
+  --err:#e06060;
+  --fd:'Cormorant Garamond',serif;
+  --fb:'Inter',sans-serif;
+  --fu:'Noto Nastaliq Urdu',serif;
+  --r:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);min-height:100vh;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--gold);}
+
+/* ── TRUST BAR ── */
+.trust-bar{
+  background:rgba(201,168,76,0.08);
+  border-bottom:1px solid rgba(201,168,76,0.15);
+  padding:10px 24px;
+  display:flex;align-items:center;justify-content:center;gap:28px;
+  font-size:0.72rem;letter-spacing:0.08em;color:var(--dim);
+  flex-wrap:wrap;
+}
+.trust-bar strong{color:var(--gold);}
+.trust-dot{width:4px;height:4px;background:rgba(201,168,76,0.3);border-radius:50%;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+.hero-left{
+  padding:60px 48px 60px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;
+}
+.hero-left::after{
+  content:'';
+  position:absolute;right:0;top:10%;bottom:10%;
+  width:1px;background:linear-gradient(to bottom,transparent,rgba(201,168,76,0.2) 30%,rgba(201,168,76,0.2) 70%,transparent);
+}
+.logo-mark{
+  font-family:var(--fd);font-size:1.3rem;font-weight:600;
+  color:var(--gold);letter-spacing:0.06em;margin-bottom:40px;
+  display:inline-block;
+}
+.logo-mark span{color:var(--white);font-weight:300;}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);
+  padding:7px 14px;font-size:0.68rem;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:28px;width:fit-content;
+}
+.pulse{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(1.6);}}
+
+.hero-h1{
+  font-family:var(--fd);font-size:clamp(2.4rem,4vw,3.8rem);
+  font-weight:300;line-height:1.1;margin-bottom:16px;
+}
+.hero-h1 em{font-style:italic;color:var(--gold);}
+
+.hero-urdu{
+  font-family:var(--fu);font-size:1.1rem;color:var(--gold2);
+  direction:rtl;margin-bottom:20px;line-height:1.8;
+}
+.hero-sub{
+  font-size:0.95rem;color:var(--dim);line-height:1.75;
+  font-weight:300;margin-bottom:36px;max-width:420px;
+}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
+.hstat .n{
+  font-family:var(--fd);font-size:2rem;color:var(--white);
+  font-weight:300;line-height:1;
+}
+.hstat .l{font-size:0.68rem;color:var(--dim);letter-spacing:0.08em;margin-top:3px;}
+
+/* ── ESTIMATOR PANEL ── */
+.hero-right{
+  padding:60px 60px 60px 48px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.estimator{
+  background:var(--bg2);
+  border:1px solid rgba(201,168,76,0.15);
+  padding:36px;
+}
+.est-title{
+  font-family:var(--fd);font-size:1.5rem;font-weight:400;
+  color:var(--white);margin-bottom:4px;
+}
+.est-urdu{
+  font-family:var(--fu);font-size:0.82rem;color:var(--gold);
+  direction:rtl;margin-bottom:24px;
+}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field.full{grid-column:span 2;}
+.field label{
+  font-size:0.67rem;letter-spacing:0.11em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+}
+.field select,.field input,.field textarea{
+  background:var(--bg3);border:1px solid rgba(201,168,76,0.15);
+  color:var(--white);padding:11px 14px;font-family:var(--fb);
+  font-size:0.87rem;transition:border-color 0.25s;
+  border-radius:var(--r);appearance:none;
+  -webkit-appearance:none;
+}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C9A84C' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.field select option{background:#111;}
+.field select:focus,.field input:focus,.field textarea:focus{outline:none;border-color:var(--gold);}
+.field textarea{min-height:70px;resize:none;}
+
+.cta-btn{
+  width:100%;padding:15px;
+  background:var(--gold);color:var(--bg);
+  border:none;font-family:var(--fb);font-size:0.82rem;
+  font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.25s;border-radius:var(--r);
+  margin-top:4px;
+}
+.cta-btn:hover{background:var(--gold2);}
+.cta-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* ── RESULT ── */
+.result{
+  margin-top:20px;display:none;
+  border:1px solid rgba(201,168,76,0.2);
+  background:var(--bg3);border-radius:var(--r);overflow:hidden;
+}
+.result.show{display:block;}
+.result-header{
+  padding:14px 18px;
+  background:rgba(201,168,76,0.07);
+  border-bottom:1px solid rgba(201,168,76,0.12);
+  display:flex;align-items:center;gap:8px;
+  font-size:0.75rem;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;
+}
+.result-cards{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:1px;background:rgba(201,168,76,0.08);
+}
+.rcard{
+  background:var(--bg2);padding:16px 14px;text-align:center;
+}
+.rcard .amt{
+  font-family:var(--fd);font-size:1.3rem;color:var(--gold);
+  font-weight:300;line-height:1;margin-bottom:4px;
+}
+.rcard .lbl{font-size:0.62rem;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;}
+.result-body{padding:16px 18px;}
+.result-body p{
+  font-size:0.83rem;color:var(--dim);line-height:1.7;
+  white-space:pre-wrap;font-weight:300;
+}
+.loading-row{
+  padding:20px 18px;display:flex;align-items:center;gap:10px;
+  color:var(--gold);font-size:0.85rem;
+}
+.dots span{animation:blink 1.4s infinite;display:inline-block;}
+.dots span:nth-child(2){animation-delay:.2s;}
+.dots span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+
+/* WhatsApp CTA after result */
+.wa-cta{
+  margin:12px 18px 16px;
+  display:flex;align-items:center;gap:10px;
+  background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.25);
+  padding:12px 16px;border-radius:var(--r);text-decoration:none;
+  transition:background 0.2s;
+}
+.wa-cta:hover{background:rgba(37,211,102,0.18);}
+.wa-cta .wa-icon{font-size:1.4rem;}
+.wa-cta .wa-text{font-size:0.82rem;color:var(--white);}
+.wa-cta .wa-text strong{color:#25D366;display:block;margin-bottom:1px;}
+
+/* ── SOCIAL PROOF STRIP ── */
+.proof-strip{
+  padding:50px 60px;
+  background:var(--bg2);
+  border-top:1px solid rgba(201,168,76,0.08);
+  border-bottom:1px solid rgba(201,168,76,0.08);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+}
+.proof-item{
+  padding:28px 24px;background:var(--bg);text-align:center;
+}
+.proof-item .n{
+  font-family:var(--fd);font-size:2.6rem;color:var(--gold);
+  font-weight:300;line-height:1;
+}
+.proof-item .l{
+  font-size:0.7rem;color:var(--dim);letter-spacing:0.08em;
+  text-transform:uppercase;margin-top:6px;
+}
+
+/* ── HOW SECTION ── */
+.how{padding:80px 60px;max-width:1000px;margin:0 auto;}
+.section-eye{
+  font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+.section-h{
+  font-family:var(--fd);font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:300;color:var(--white);margin-bottom:40px;line-height:1.2;
+}
+.section-h em{font-style:italic;color:var(--gold);}
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+.step{
+  background:var(--bg2);padding:28px 22px;
+  position:relative;border:1px solid rgba(201,168,76,0.06);
+}
+.step-n{
+  font-family:var(--fd);font-size:2.4rem;color:rgba(201,168,76,0.18);
+  line-height:1;margin-bottom:16px;
+}
+.step-title{font-size:0.9rem;font-weight:600;color:var(--white);margin-bottom:8px;}
+.step-text{font-size:0.8rem;color:var(--dim);line-height:1.65;font-weight:300;}
+
+/* ── TESTIMONIALS ── */
+.testi{padding:0 60px 80px;}
+.testi-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.tcard{
+  background:var(--bg2);padding:32px;
+  border:1px solid rgba(201,168,76,0.07);
+}
+.tcard q{
+  font-family:var(--fd);font-size:1.1rem;font-style:italic;
+  color:var(--white);line-height:1.6;quotes:none;
+  display:block;margin-bottom:20px;
+}
+.tcard q::before{
+  content:'"';color:var(--gold);font-size:2rem;
+  line-height:0;vertical-align:-0.7rem;margin-right:4px;
+}
+.tcard-author{display:flex;gap:12px;align-items:center;}
+.tcard-av{
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fd);font-size:1.1rem;color:var(--gold);flex-shrink:0;
+}
+.tcard-name{font-size:0.85rem;font-weight:500;color:var(--white);}
+.tcard-loc{font-size:0.72rem;color:var(--gold);}
+
+/* ── BOTTOM CTA ── */
+.bottom-cta{
+  background:var(--gold);padding:60px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.bottom-cta h2{
+  font-family:var(--fd);font-size:clamp(1.8rem,3vw,3rem);
+  font-weight:300;color:var(--bg);margin-bottom:8px;
+}
+.bottom-cta h2 em{font-style:italic;}
+.bottom-cta .urdu{
+  font-family:var(--fu);font-size:1rem;color:rgba(10,10,10,0.65);
+  direction:rtl;margin-bottom:28px;
+}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-dark{
+  background:var(--bg);color:var(--gold);padding:14px 32px;
+  font-size:0.78rem;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;text-decoration:none;
+  border:2px solid var(--bg);transition:all 0.25s;border-radius:var(--r);
+}
+.btn-dark:hover{background:transparent;color:var(--bg);border-color:var(--bg);}
+.btn-outline-dark{
+  background:transparent;color:var(--bg);padding:14px 32px;
+  font-size:0.78rem;font-weight:600;letter-spacing:0.1em;
+  text-transform:uppercase;text-decoration:none;
+  border:2px solid rgba(10,10,10,0.4);transition:all 0.25s;border-radius:var(--r);
+}
+.btn-outline-dark:hover{border-color:var(--bg);background:rgba(10,10,10,0.08);}
+
+/* ── FOOTER ── */
+.footer{
+  background:var(--bg);border-top:1px solid rgba(201,168,76,0.1);
+  padding:28px 60px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-brand{font-family:var(--fd);font-size:1.2rem;color:var(--gold);}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;}
+.footer-links a{
+  font-size:0.75rem;color:var(--dim);text-decoration:none;
+  letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--gold);}
+.footer-right{font-size:0.72rem;color:var(--dim);}
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  background:#25D366;width:54px;height:54px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;text-decoration:none;
+  box-shadow:0 4px 20px rgba(37,211,102,0.35);
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+
+/* ── MOBILE ── */
+@media(max-width:820px){
+  .hero{grid-template-columns:1fr;}
+  .hero-left::after{display:none;}
+  .hero-left{padding:40px 20px 20px;}
+  .hero-right{padding:20px 20px 40px;}
+  .estimator{padding:24px 18px;}
+  .field-grid{grid-template-columns:1fr;}
+  .field.full{grid-column:span 1;}
+  .result-cards{grid-template-columns:1fr 1fr;}
+  .proof-strip{grid-template-columns:1fr 1fr;padding:36px 20px;gap:1px;}
+  .proof-item{padding:20px 12px;}
+  .how{padding:50px 20px;}
+  .steps-row{grid-template-columns:1fr 1fr;}
+  .testi{padding:0 20px 50px;}
+  .testi-grid{grid-template-columns:1fr;}
+  .bottom-cta{padding:40px 20px;}
+  .footer{padding:20px;flex-direction:column;text-align:center;}
+  .trust-bar{gap:12px;font-size:0.65rem;}
+  .trust-dot{display:none;}
+}
+@media(max-width:480px){
+  .steps-row{grid-template-columns:1fr;}
+  .result-cards{grid-template-columns:1fr;}
+  .hero-stats{gap:16px;}
+}
+</style>
+</head>
+<body>
+
+<a href="https://wa.me/923294839897?text=Hello%20Randerix%20AI!%20Mujhe%20free%20consultation%20chahiye." class="wa-float" target="_blank" title="WhatsApp">💬</a>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <span>🏆 <strong>Est. 1985</strong></span>
+  <div class="trust-dot"></div>
+  <span><strong>500+</strong> Projects Delivered</span>
+  <div class="trust-dot"></div>
+  <span><strong>40+</strong> Years Experience</span>
+  <div class="trust-dot"></div>
+  <span>🇵🇰 Faisalabad · Lahore · Islamabad · Karachi</span>
+  <div class="trust-dot"></div>
+  <span>🇦🇪 UAE Diaspora Serving</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- LEFT: Brand + pitch -->
+  <div class="hero-left">
+    <a href="index.html" class="logo-mark">RANDERIX <span>AI</span></a>
+
+    <div class="hero-eyebrow">
+      <span class="pulse"></span>
+      Pakistan's First AI Architecture Platform
+    </div>
+
+    <h1 class="hero-h1">
+      Apne Ghar ki<br/>
+      Cost Abhi<br/>
+      <em>Janein — Free</em>
+    </h1>
+
+    <p class="hero-urdu">فوری لاگت کا تخمینہ • فلور پلان • ڈیزائن مشورہ</p>
+
+    <p class="hero-sub">
+      Describe your project — get an instant AI-powered cost estimate, floor plan ideas, and design advice. In Urdu or English. No signup. 100% free.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">PKR 2.8K</div><div class="l">Starting rate / sqft</div></div>
+      <div class="hstat"><div class="n">60 sec</div><div class="l">AI estimate time</div></div>
+      <div class="hstat"><div class="n">Free</div><div class="l">Always</div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Live AI Estimator -->
+  <div class="hero-right">
+    <div class="estimator">
+      <h2 class="est-title">AI Cost Estimator</h2>
+      <p class="est-urdu">تعمیراتی لاگت کا فوری تخمینہ لگائیں</p>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Plot Size / پلاٹ سائز</label>
+          <select id="e-size">
+            <option value="3 Marla">3 Marla</option>
+            <option value="5 Marla" selected>5 Marla</option>
+            <option value="7 Marla">7 Marla</option>
+            <option value="10 Marla">10 Marla</option>
+            <option value="1 Kanal">1 Kanal</option>
+            <option value="2 Kanal">2 Kanal</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>City / شہر</label>
+          <select id="e-city">
+            <option>Faisalabad</option>
+            <option>Lahore</option>
+            <option>Islamabad</option>
+            <option>Karachi</option>
+            <option>Rawalpindi</option>
+            <option>Multan</option>
+            <option>Other Punjab City</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Finishing Level</label>
+          <select id="e-finish">
+            <option value="Grey Structure Only">Grey Structure</option>
+            <option value="Semi-Finished" selected>Semi-Finished</option>
+            <option value="Full Finished Standard">Full Finish</option>
+            <option value="Full Finished Luxury">Full Luxury</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Floors / منزلیں</label>
+          <select id="e-floors">
+            <option value="Single Storey">Single Storey</option>
+            <option value="Double Storey" selected>Double Storey</option>
+            <option value="Triple Storey">Triple Storey</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Special Requirements (Optional)</label>
+          <textarea id="e-extra" placeholder="e.g. car porch, basement, solar, imported tiles... یا اردو میں لکھیں"></textarea>
+        </div>
+      </div>
+
+      <button class="cta-btn" id="est-btn" onclick="runEstimate()">
+        🤖 Calculate Free AI Estimate →
+      </button>
+
+      <div class="result" id="est-result">
+        <div class="result-header">
+          <span>✦</span> Your AI Estimate
+        </div>
+        <div class="loading-row" id="est-loading" style="display:none;">
+          🤖 Calculating<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+        <div id="est-cards" class="result-cards" style="display:none;"></div>
+        <div class="result-body" id="est-body" style="display:none;"></div>
+        <a href="https://wa.me/923294839897?text=Hello%20Randerix%20AI!%20Maine%20AI%20se%20cost%20estimate%20nikali%20hai%20aur%20consultation%20chahiye." target="_blank" class="wa-cta" id="est-wa" style="display:none;">
+          <span class="wa-icon">💬</span>
+          <div class="wa-text">
+            <strong>Book Free Consultation →</strong>
+            Reply within 30 minutes · Architect Rimsha
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item"><div class="n">500+</div><div class="l">Projects Delivered</div></div>
+  <div class="proof-item"><div class="n">40+</div><div class="l">Years Experience</div></div>
+  <div class="proof-item"><div class="n">98%</div><div class="l">Client Satisfaction</div></div>
+  <div class="proof-item"><div class="n">3</div><div class="l">Countries Served</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <p class="section-eye">How It Works</p>
+  <h2 class="section-h">Ghar Banane Ka<br/><em>Naya Tareeqa</em></h2>
+  <div class="steps-row">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-title">Free AI Estimate</div>
+      <div class="step-text">Apna plot size aur city daalo — AI 60 seconds mein exact PKR cost nikalta hai.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-title">AI Floor Plan</div>
+      <div class="step-text">Apna khaka upload karo ya describe karo — AI room-by-room layout suggest karta hai.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-title">WhatsApp Consultation</div>
+      <div class="step-text">Architect Rimsha se direct baat — free, 30 minute mein reply, Urdu ya English mein.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-title">Build with Confidence</div>
+      <div class="step-text">Complete design, 3D visualization, NOC assistance, aur construction supervision — sab ek jagah.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="testi">
+  <div class="testi-grid">
+    <div class="tcard">
+      <q>Randerix AI نے میری تعمیراتی لاگت کا ایک منٹ میں حساب لگا دیا۔ بالکل درست نکلی۔ واقعی پاکستان کی بہترین سروس ہے۔</q>
+      <div class="tcard-author">
+        <div class="tcard-av">A</div>
+        <div><div class="tcard-name">Ahmed Raza</div><div class="tcard-loc">Faisalabad · 1 Kanal Villa</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <q>Being in Dubai, I needed someone reliable for my Pakistan project. Randerix AI's remote consultation was flawless. Highly recommended for overseas Pakistanis.</q>
+      <div class="tcard-author">
+        <div class="tcard-av">S</div>
+        <div><div class="tcard-name">Sana Malik</div><div class="tcard-loc">Dubai, UAE · 10 Marla Home</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>Aaj Hi <em>Shuru Karein</em></h2>
+  <p class="urdu">مفت مشاورت — کوئی پابندی نہیں</p>
+  <div class="cta-row">
+    <a href="ai-tools.html" class="btn-dark">🤖 Try All AI Tools →</a>
+    <a href="https://wa.me/923294839897?text=Hello%20Randerix%20AI!%20Free%20consultation%20chahiye." class="btn-outline-dark" target="_blank">💬 WhatsApp Now</a>
+    <a href="index.html" class="btn-outline-dark">🏠 Full Website →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">RANDERIX AI</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="ai-tools.html">AI Tools</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-right">© 2025 Randerix AI Studio · Est. 1985 · +92 329 4839897</div>
+</footer>
+
+<script>
+async function runEstimate() {
+  const size   = document.getElementById('e-size').value;
+  const city   = document.getElementById('e-city').value;
+  const finish = document.getElementById('e-finish').value;
+  const floors = document.getElementById('e-floors').value;
+  const extra  = document.getElementById('e-extra').value;
+
+  const btn    = document.getElementById('est-btn');
+  const result = document.getElementById('est-result');
+  const loading= document.getElementById('est-loading');
+  const cards  = document.getElementById('est-cards');
+  const body   = document.getElementById('est-body');
+  const waLink = document.getElementById('est-wa');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Calculating...';
+  result.classList.add('show');
+  loading.style.display = 'flex';
+  cards.style.display   = 'none';
+  body.style.display    = 'none';
+  waLink.style.display  = 'none';
+
+  function fmt(n) {
+    return typeof n === 'number' ? 'PKR ' + n.toLocaleString('en-PK') : (n || '—');
+  }
+
+  try {
+    const res  = await fetch('/.netlify/functions/estimate', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ size, city, finish, floors, extra })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    loading.style.display = 'none';
+
+    // Animate cards
+    cards.style.display = 'grid';
+    cards.innerHTML = `
+      <div class="rcard"><div class="amt" id="c1">—</div><div class="lbl">Grey Structure</div></div>
+      <div class="rcard"><div class="amt" id="c2">—</div><div class="lbl">Semi-Finished</div></div>
+      <div class="rcard"><div class="amt" id="c3">—</div><div class="lbl">Full Luxury</div></div>
+    `;
+    // Stagger reveal
+    setTimeout(()=>{ document.getElementById('c1').textContent = fmt(data.grey_structure_pkr); }, 200);
+    setTimeout(()=>{ document.getElementById('c2').textContent = fmt(data.semi_finished_pkr);  }, 450);
+    setTimeout(()=>{ document.getElementById('c3').textContent = fmt(data.full_luxury_pkr);    }, 700);
+
+    const tips = (data.money_saving_tips || []).slice(0,3).map(t => '• ' + t).join('\n');
+    body.style.display = 'block';
+    body.innerHTML = `<p>
+<strong style="color:var(--gold);">Rate / Sq Ft:</strong> ${fmt(data.rate_per_sqft_pkr)}   |   <strong style="color:var(--gold);">Timeline:</strong> ${data.timeline_months || 'N/A'}
+<br/><strong style="color:var(--gold);">Material vs Labor:</strong> ${data.material_cost_percent || '—'}% / ${data.labor_cost_percent || '—'}%
+
+${data.summary_english || ''}
+
+<span style="font-family:'Noto Nastaliq Urdu',serif;direction:rtl;display:block;color:var(--gold2);margin-top:8px;font-size:0.9rem;">${data.summary_urdu || ''}</span>
+
+<span style="color:var(--gold2);font-weight:500;">Money-Saving Tips:</span>
+${tips}
+
+<span style="font-size:0.75rem;opacity:0.6;">⚠ AI estimate — actual costs may vary. Book a free consultation for an exact quote.</span>
+    </p>`;
+
+    // Update WhatsApp link with estimate details
+    const waMsg = encodeURIComponent(
+      `Hello Randerix AI!\n\nMujhe AI estimate mila:\n• Plot: ${size}\n• City: ${city}\n• Finishing: ${finish}\n\nFree consultation chahiye.`
+    );
+    waLink.href = `https://wa.me/923294839897?text=${waMsg}`;
+    waLink.style.display = 'flex';
+
+  } catch(e) {
+    loading.style.display = 'none';
+    body.style.display = 'block';
+    body.innerHTML = `<p style="color:var(--err);">Connection error. Please try again or WhatsApp us directly at +92 329 4839897.</p>`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🤖 Recalculate →';
+}
+
+// Enter key on textarea
+document.getElementById('e-extra').addEventListener('keydown', function(e){
+  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); runEstimate(); }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Blog — Randerix AI | Architecture & Construction Insights Pakistan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--black:#080808;--black2:#0f0f0f;--black3:#141414;--gold:#C9A84C;--gold2:#E8C97E;--white:#F5F0E8;--white2:#d4cfc7;--font-display:'Cormorant Garamond',serif;--font-body:'Inter',sans-serif;--font-urdu:'Noto Nastaliq Urdu',serif;}
+*{margin:0;padding:0;box-sizing:border-box;}body{background:var(--black);color:var(--white);font-family:var(--font-body);}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--gold);}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,0.15);}
+.nav-logo{font-family:var(--font-display);font-size:1.6rem;font-weight:600;color:var(--gold);text-decoration:none;}.nav-logo span{color:var(--white);font-weight:300;}
+.nav-links{display:flex;gap:36px;list-style:none;}.nav-links a{color:var(--white2);font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:color 0.3s;}.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-cta{background:var(--gold);color:var(--black);padding:10px 24px;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;}
+.page-hero{padding:140px 60px 60px;background:var(--black2);border-bottom:1px solid rgba(201,168,76,0.1);}
+.page-hero h1{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--white);margin-bottom:12px;}.page-hero h1 em{font-style:italic;color:var(--gold);}
+section{padding:80px 60px;}
+
+/* FILTER */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px;justify-content:space-between;align-items:center;}
+.filter-left{display:flex;gap:8px;flex-wrap:wrap;}
+.filter-btn{background:transparent;border:1px solid rgba(201,168,76,0.2);color:var(--white2);padding:10px 18px;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:all 0.3s;}
+.filter-btn:hover,.filter-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold);}
+.admin-toggle{background:transparent;border:1px dashed rgba(201,168,76,0.3);color:var(--gold);padding:10px 18px;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);}
+
+/* BLOG GRID */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.blog-card{background:var(--black3);border:1px solid rgba(201,168,76,0.08);padding:32px;transition:all 0.3s;cursor:pointer;display:flex;flex-direction:column;}
+.blog-card:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.03);}
+.blog-tag{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.blog-title{font-family:var(--font-display);font-size:1.3rem;color:var(--white);margin-bottom:10px;line-height:1.3;}
+.blog-excerpt{font-size:0.85rem;color:var(--white2);line-height:1.6;font-weight:300;margin-bottom:16px;flex:1;}
+.blog-meta{font-size:0.72rem;color:var(--white2);margin-top:auto;padding-top:16px;border-top:1px solid rgba(201,168,76,0.1);}
+.ai-generated-badge{display:inline-block;background:rgba(201,168,76,0.15);color:var(--gold);font-size:0.6rem;padding:2px 8px;letter-spacing:0.08em;text-transform:uppercase;margin-left:8px;}
+
+/* READER VIEW */
+.reader-overlay{position:fixed;inset:0;background:var(--black);z-index:2000;overflow-y:auto;display:none;}
+.reader-overlay.show{display:block;}
+.reader-close{position:fixed;top:24px;right:40px;z-index:2001;background:var(--black2);border:1px solid rgba(201,168,76,0.3);color:var(--gold);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.2rem;}
+.reader-content{max-width:760px;margin:0 auto;padding:100px 24px 100px;}
+.reader-tag{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.reader-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.reader-title-urdu{font-family:var(--font-urdu);font-size:1.2rem;color:var(--gold2);direction:rtl;margin-bottom:20px;}
+.reader-meta{font-size:0.8rem;color:var(--white2);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid rgba(201,168,76,0.15);}
+.reader-section{margin-bottom:32px;}
+.reader-section h3{font-family:var(--font-display);font-size:1.5rem;color:var(--gold);margin-bottom:14px;font-weight:400;}
+.reader-section p{font-size:0.95rem;color:var(--white2);line-height:1.85;font-weight:300;margin-bottom:14px;}
+.takeaways-box{background:var(--black2);border-left:3px solid var(--gold);padding:24px 28px;margin:32px 0;}
+.takeaways-box h4{font-family:var(--font-display);font-size:1.2rem;color:var(--gold);margin-bottom:12px;}
+.takeaways-box ul{list-style:none;}
+.takeaways-box li{font-size:0.88rem;color:var(--white2);padding:6px 0;font-weight:300;}
+.takeaways-box li::before{content:'✦ ';color:var(--gold);}
+.urdu-summary-box{font-family:var(--font-urdu);font-size:1.05rem;color:var(--gold2);direction:rtl;background:rgba(201,168,76,0.05);border-right:3px solid var(--gold);padding:20px 24px;margin:32px 0;line-height:2;}
+.tags-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:32px;}
+.tag-pill{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);color:var(--gold);padding:6px 14px;font-size:0.72rem;}
+.reader-cta{margin-top:48px;background:var(--black2);border:1px solid rgba(201,168,76,0.2);padding:32px;text-align:center;}
+.reader-cta h4{font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:8px;}
+.reader-cta p{font-size:0.85rem;color:var(--white2);margin-bottom:20px;font-weight:300;}
+
+/* ADMIN GENERATOR PANEL */
+.admin-panel{display:none;background:var(--black2);border:1px solid rgba(201,168,76,0.2);padding:40px;margin-bottom:60px;}
+.admin-panel.show{display:block;}
+.admin-panel h3{font-family:var(--font-display);font-size:1.6rem;color:var(--gold);margin-bottom:8px;}
+.admin-panel .sub{font-size:0.82rem;color:var(--white2);margin-bottom:24px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.form-full{grid-column:span 2;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group label{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);}
+.form-group input,.form-group select,.form-group textarea{background:var(--black3);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:14px 16px;font-family:var(--font-body);font-size:0.88rem;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);}
+.form-group select option{background:var(--black3);}
+.ai-submit{background:var(--gold);color:var(--black);padding:16px 36px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--font-body);transition:background 0.3s;}
+.ai-submit:hover{background:var(--gold2);}
+.gen-result{margin-top:24px;background:var(--black3);border:1px solid rgba(201,168,76,0.15);padding:24px;display:none;}
+.gen-result.show{display:block;}
+.loading{display:flex;align-items:center;gap:10px;color:var(--gold);font-size:0.9rem;}
+.loading-dots span{animation:blink 1.4s infinite;display:inline-block;}
+.loading-dots span:nth-child(2){animation-delay:0.2s;}.loading-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes blink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+.admin-lock{max-width:380px;margin:0 auto;text-align:center;}
+.admin-lock input{width:100%;background:var(--black3);border:1px solid rgba(201,168,76,0.2);color:var(--white);padding:14px 16px;font-family:var(--font-body);font-size:0.9rem;margin-bottom:12px;text-align:center;}
+
+.whatsapp-btn{position:fixed;bottom:30px;right:30px;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;z-index:999;}
+@media(max-width:900px){nav{padding:16px 24px;}.nav-links{display:none;}section{padding:50px 24px;}.blog-grid{grid-template-columns:1fr;}.form-grid{grid-template-columns:1fr;}.form-full{grid-column:span 1;}.page-hero{padding:100px 24px 50px;}.filter-bar{flex-direction:column;align-items:flex-start;}.reader-content{padding:90px 20px 80px;}.reader-close{top:16px;right:16px;}}
+</style>
+</head>
+<body>
+<a href="https://wa.me/923294839897" class="whatsapp-btn" target="_blank">💬</a>
+<nav>
+  <a href="index.html" class="nav-logo">RANDERIX <span>AI</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="ai-tools.html">AI Tools</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Free Consultation</a>
+</nav>
+<div class="page-hero">
+  <h1>Architecture <em>Insights</em></h1>
+  <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:1rem;color:#E8C97E;direction:rtl;margin-bottom:12px;">تعمیرات اور ڈیزائن سے متعلق مفید معلومات</p>
+  <p style="color:var(--white2);font-weight:300;">Practical, Pakistan-focused articles on architecture, construction, and interior design.</p>
+</div>
+
+<section>
+  <div class="filter-bar">
+    <div class="filter-left">
+      <button class="filter-btn active" onclick="filterBlog('all',this)">All Articles</button>
+      <button class="filter-btn" onclick="filterBlog('Architecture Tips',this)">Architecture Tips</button>
+      <button class="filter-btn" onclick="filterBlog('Construction Guide',this)">Construction Guide</button>
+      <button class="filter-btn" onclick="filterBlog('Interior Design',this)">Interior Design</button>
+      <button class="filter-btn" onclick="filterBlog('Cost Guide',this)">Cost Guide</button>
+      <button class="filter-btn" onclick="filterBlog('UAE/Diaspora',this)">UAE / Diaspora</button>
+    </div>
+    <button class="admin-toggle" onclick="toggleAdmin()">🔐 Admin: Generate Article</button>
+  </div>
+
+  <!-- ADMIN PANEL (password gated) -->
+  <div class="admin-panel" id="admin-panel">
+    <div id="admin-lock-screen" class="admin-lock">
+      <h3 style="margin-bottom:16px;">Admin Access</h3>
+      <input type="password" id="admin-pass" placeholder="Enter admin password"/>
+      <button class="ai-submit" style="width:100%;" onclick="checkAdminPass()">Unlock →</button>
+      <p style="font-size:0.7rem;color:var(--white2);margin-top:12px;">Default password: randerix2025 (change in code before launch)</p>
+    </div>
+    <div id="admin-generator" style="display:none;">
+      <h3>🤖 AI Blog Generator</h3>
+      <p class="sub">Give a topic — AI writes a complete bilingual article ready to publish.</p>
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label>Article Topic / Title Idea</label>
+          <input type="text" id="gen-topic" placeholder="e.g. How to choose the right architect in Pakistan, Vastu vs modern home design, Solar panel installation costs..."/>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="gen-category">
+            <option>Architecture Tips</option>
+            <option>Construction Guide</option>
+            <option>Interior Design</option>
+            <option>Cost Guide</option>
+            <option>Case Study</option>
+            <option>UAE/Diaspora</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tone</label>
+          <select id="gen-tone">
+            <option value="professional yet approachable">Professional & Approachable</option>
+            <option value="casual and friendly">Casual & Friendly</option>
+            <option value="expert technical">Expert / Technical</option>
+            <option value="inspirational and storytelling">Inspirational / Storytelling</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Length</label>
+          <select id="gen-length">
+            <option value="short">Short (500-700 words)</option>
+            <option value="medium" selected>Medium (800-1000 words)</option>
+            <option value="long">Long (1200-1500 words)</option>
+          </select>
+        </div>
+      </div>
+      <button class="ai-submit" onclick="generateBlogArticle()">✨ Generate Article →</button>
+      <div class="gen-result" id="gen-result">
+        <div class="loading" id="gen-loading" style="display:none;">🤖 Writing your article... <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
+        <div id="gen-preview"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blog-grid" id="blog-grid"></div>
+</section>
+
+<!-- READER OVERLAY -->
+<div class="reader-overlay" id="reader-overlay">
+  <button class="reader-close" onclick="closeReader()">✕</button>
+  <div class="reader-content" id="reader-content"></div>
+</div>
+
+<footer style="background:var(--black);border-top:1px solid rgba(201,168,76,0.15);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
+  <span style="font-family:var(--font-display);font-size:1.4rem;color:var(--gold);">RANDERIX AI</span>
+  <p style="font-size:0.75rem;color:var(--white2);">© 2025 Randerix AI Studio · Est. 1985</p>
+  <a href="https://wa.me/923294839897" style="color:var(--gold);font-size:0.8rem;text-decoration:none;">+92 329 4839897</a>
+</footer>
+
+<script>
+// ===== STATIC SEED ARTICLES =====
+let articles = [
+  {
+    id: 1, generated: false,
+    title: "5 Marla House Design in Pakistan: Complete Guide 2025",
+    title_urdu: "پاکستان میں 5 مرلہ گھر کا ڈیزائن: مکمل گائیڈ 2025",
+    category: "Architecture Tips",
+    read_time: "8 min read",
+    excerpt: "Everything you need to know about designing a 5 Marla home — floor plans, costs, and modern trends across Pakistan's top cities.",
+    sections: [
+      { heading: "Why 5 Marla Remains Pakistan's Most Popular Plot Size", content: "A 5 Marla plot (approximately 1,125 sq ft) continues to be the most sought-after residential size across Faisalabad, Lahore, and Islamabad. It strikes the perfect balance between affordability and livable space for a small to medium family.\n\nWith smart design, a 5 Marla home can comfortably house 3 bedrooms, a drawing room, dining area, and modern kitchen — without feeling cramped." },
+      { heading: "Optimal Floor Plan Layout", content: "Ground floor typically includes: a drawing room (12x14 ft) near the entrance for guests, an open-plan lounge and dining area (16x12 ft), a modern kitchen (10x10 ft), one bedroom with attached bath for elderly family members, and a small car porch.\n\nThe first floor usually houses 2-3 bedrooms with attached bathrooms, a TV lounge, and a utility area or store room." },
+      { heading: "Construction Costs in 2025", content: "Grey structure costs range from PKR 2,900-3,400 per sq ft depending on the city. Semi-finished construction runs PKR 3,800-4,500 per sq ft, while full-finish standard quality reaches PKR 5,200-6,000 per sq ft.\n\nFor a typical 5 Marla double-storey home (around 2,000 sq ft covered area), total construction cost ranges from PKR 58 lakh to over PKR 1.2 crore depending on finishing level." }
+    ],
+    key_takeaways: ["5 Marla plots offer the best value-to-space ratio for Pakistani families", "Smart layout planning can fit 3-4 bedrooms comfortably", "Grey structure costs start around PKR 2,900/sq ft in 2025", "Double-storey design maximizes space on smaller plots"],
+    urdu_summary: "5 مرلہ پلاٹ پاکستان میں سب سے مقبول رہائشی سائز ہے۔ صحیح منصوبہ بندی کے ساتھ، اس میں 3 سے 4 بیڈ رومز آرام سے بن سکتے ہیں۔ 2025 میں تعمیراتی لاگت فی مربع فٹ PKR 2,900 سے شروع ہوتی ہے۔",
+    tags: ["5 Marla", "Floor Plan", "Construction Cost", "House Design"]
+  },
+  {
+    id: 2, generated: false,
+    title: "Construction Cost Per Sq Ft Pakistan 2025 — Full Breakdown",
+    title_urdu: "پاکستان میں تعمیراتی لاگت فی مربع فٹ 2025 — مکمل تفصیل",
+    category: "Cost Guide",
+    read_time: "9 min read",
+    excerpt: "Updated construction rates for Faisalabad, Lahore, Islamabad, and Karachi — from grey structure to full luxury finishing.",
+    sections: [
+      { heading: "City-Wise Construction Rates 2025", content: "Construction costs vary significantly by city due to labor rates, material transportation, and local demand. Karachi and Islamabad typically see 10-15% higher rates than Faisalabad or Multan due to higher labor and land costs.\n\nFaisalabad: PKR 2,800-3,200/sq ft (grey). Lahore: PKR 3,000-3,500/sq ft. Islamabad: PKR 3,200-3,800/sq ft. Karachi: PKR 3,100-3,700/sq ft." },
+      { heading: "Material Cost Breakdown", content: "Cement (Lucky, DG Khan, Fauji) accounts for roughly 18-22% of total material cost. Steel/reinforcement bars make up another 25-30%. Bricks and blocks contribute 12-15%, while sanitary, electrical, and finishing materials make up the remainder.\n\nMaterial prices have shown moderate inflation through 2024-2025, with cement seeing the steepest increase due to energy costs." },
+      { heading: "Labor Costs and Skilled Trades", content: "Skilled mason rates range from PKR 1,200-1,800 per day depending on city. Electrician and plumber day-rates run PKR 1,500-2,200. For a typical 5 Marla home, labor costs represent approximately 35-40% of total construction budget." }
+    ],
+    key_takeaways: ["Islamabad and Karachi have the highest construction rates in Pakistan", "Material costs make up roughly 60% of total construction budget", "Cement and steel together account for nearly half of material expenses", "Always get 3 contractor quotes before finalizing"],
+    urdu_summary: "پاکستان میں تعمیراتی لاگت شہر کے لحاظ سے مختلف ہوتی ہے۔ اسلام آباد اور کراچی میں سب سے زیادہ نرخ ہیں۔ مٹیریل کی لاگت کل بجٹ کا تقریباً 60 فیصد ہوتی ہے۔",
+    tags: ["Cost Per Sq Ft", "Material Prices", "Labor Cost", "2025 Rates"]
+  },
+  {
+    id: 3, generated: false,
+    title: "Top Interior Design Trends Pakistan 2025 — What's In",
+    title_urdu: "پاکستان میں انٹیریئر ڈیزائن کے رجحانات 2025",
+    category: "Interior Design",
+    read_time: "5 min read",
+    excerpt: "From luxury minimalism to bold textures — the interior trends dominating Pakistani homes this year.",
+    sections: [
+      { heading: "Warm Minimalism Takes Over", content: "Pakistani homeowners are moving away from heavily ornate, gold-accented interiors toward warm minimalism — clean lines, neutral tones (think Berger's 'Sahara Sand' and 'Warm Greige'), and fewer but higher-quality furniture pieces.\n\nThis shift reflects both aesthetic preference and practical budget consciousness among younger homeowners." },
+      { heading: "Textured Walls and Statement Ceilings", content: "Textured wall finishes — micro-cement, limewash, and exposed brick accents — are replacing flat paint in feature areas like drawing rooms and TV lounges. False ceilings with cove lighting remain popular but are trending toward simpler, geometric designs rather than ornate patterns." },
+      { heading: "Smart Kitchen Layouts", content: "Open and semi-open kitchens with islands are increasingly requested even in mid-range homes. Modular kitchen brands like Interwood and PEL are seeing demand for matte-finish cabinets in sage green and charcoal tones, paired with quartz countertops." }
+    ],
+    key_takeaways: ["Warm minimalism is replacing ornate gold-accented interiors", "Textured walls (micro-cement, limewash) are the top 2025 trend", "Open kitchen layouts are now requested in mid-range budgets too", "Sage green and charcoal are the leading cabinet color choices"],
+    urdu_summary: "پاکستانی گھروں میں اب سادہ اور گرم رنگوں کا رجحان بڑھ رہا ہے۔ ٹیکسچرڈ دیواریں اور اوپن کچن ڈیزائن 2025 کے سب سے مقبول رجحانات ہیں۔",
+    tags: ["Interior Trends", "2025", "Minimalism", "Kitchen Design"]
+  }
+];
+
+function renderBlogGrid(filter = 'all') {
+  const grid = document.getElementById('blog-grid');
+  const filtered = filter === 'all' ? articles : articles.filter(a => a.category === filter);
+  grid.innerHTML = filtered.map(a => `
+    <div class="blog-card" onclick="openReader(${a.id})">
+      <div class="blog-tag">${a.category}${a.generated ? '<span class="ai-generated-badge">AI Generated</span>' : ''}</div>
+      <h3 class="blog-title">${a.title}</h3>
+      <p class="blog-excerpt">${a.excerpt}</p>
+      <div class="blog-meta">${a.read_time} · Randerix AI Studio</div>
+    </div>
+  `).join('');
+}
+
+function filterBlog(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBlogGrid(cat);
+}
+
+function openReader(id) {
+  const a = articles.find(x => x.id === id);
+  if (!a) return;
+  const content = document.getElementById('reader-content');
+  const sectionsHtml = (a.sections || []).map(s => `
+    <div class="reader-section">
+      <h3>${s.heading}</h3>
+      ${(s.content || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}
+    </div>
+  `).join('');
+  const takeawaysHtml = (a.key_takeaways || []).map(t => `<li>${t}</li>`).join('');
+  const tagsHtml = (a.tags || []).map(t => `<span class="tag-pill">${t}</span>`).join('');
+
+  content.innerHTML = `
+    <div class="reader-tag">${a.category}${a.generated ? '<span class="ai-generated-badge">AI Generated</span>' : ''}</div>
+    <h1 class="reader-title">${a.title}</h1>
+    <p class="reader-title-urdu">${a.title_urdu || ''}</p>
+    <p class="reader-meta">${a.read_time} · By Randerix AI Studio</p>
+    ${sectionsHtml}
+    <div class="takeaways-box">
+      <h4>Key Takeaways</h4>
+      <ul>${takeawaysHtml}</ul>
+    </div>
+    <div class="urdu-summary-box">${a.urdu_summary || ''}</div>
+    <div class="tags-row">${tagsHtml}</div>
+    <div class="reader-cta">
+      <h4>Need Help With Your Project?</h4>
+      <p>Get a free consultation with Architect Rimsha, or try our AI tools instantly.</p>
+      <a href="contact.html" style="display:inline-block;background:var(--gold);color:var(--black);padding:14px 28px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;margin-right:10px;">Book Consultation</a>
+      <a href="ai-tools.html" style="display:inline-block;background:transparent;color:var(--white);padding:14px 28px;font-size:0.78rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(255,255,255,0.2);">Try AI Tools</a>
+    </div>
+  `;
+  document.getElementById('reader-overlay').classList.add('show');
+  window.scrollTo(0,0);
+}
+
+function closeReader() {
+  document.getElementById('reader-overlay').classList.remove('show');
+}
+
+// ===== ADMIN AI GENERATOR =====
+function toggleAdmin() {
+  document.getElementById('admin-panel').classList.toggle('show');
+}
+
+function checkAdminPass() {
+  const pass = document.getElementById('admin-pass').value;
+  if (pass === 'randerix2025') {
+    document.getElementById('admin-lock-screen').style.display = 'none';
+    document.getElementById('admin-generator').style.display = 'block';
+  } else {
+    alert('Incorrect password.');
+  }
+}
+
+let nextArticleId = 1000;
+
+async function generateBlogArticle() {
+  const topic = document.getElementById('gen-topic').value.trim();
+  if (!topic) { alert('Please enter a topic.'); return; }
+  const category = document.getElementById('gen-category').value;
+  const tone = document.getElementById('gen-tone').value;
+  const length = document.getElementById('gen-length').value;
+
+  const result = document.getElementById('gen-result');
+  const loading = document.getElementById('gen-loading');
+  const preview = document.getElementById('gen-preview');
+  result.classList.add('show');
+  loading.style.display = 'flex';
+  preview.innerHTML = '';
+
+  try {
+    const res = await fetch('/.netlify/functions/blog-generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, category, tone, length })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    loading.style.display = 'none';
+
+    const newArticle = {
+      id: nextArticleId++,
+      generated: true,
+      title: data.title,
+      title_urdu: data.title_urdu,
+      category: data.category || category,
+      read_time: data.read_time || '6 min read',
+      excerpt: data.excerpt,
+      sections: data.sections || [],
+      key_takeaways: data.key_takeaways || [],
+      urdu_summary: data.urdu_summary || '',
+      tags: data.tags || []
+    };
+
+    preview.innerHTML = `
+      <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(201,168,76,0.15);">
+        <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">✅ Article Generated Successfully</p>
+        <h4 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--white);">${newArticle.title}</h4>
+        <p style="font-size:0.85rem;color:var(--white2);margin-top:8px;">${newArticle.excerpt}</p>
+      </div>
+      <button class="ai-submit" onclick="publishGeneratedArticle(${JSON.stringify(newArticle).replace(/"/g, '&quot;')})">📤 Publish to Blog →</button>
+      <button class="ai-submit" style="background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);margin-left:10px;" onclick="previewFullArticle(${JSON.stringify(newArticle).replace(/"/g, '&quot;')})">👁 Preview Full Article</button>
+    `;
+
+    window.lastGeneratedArticle = newArticle;
+  } catch(e) {
+    loading.style.display = 'none';
+    preview.innerHTML = `<p style="color:#e08080;font-size:0.85rem;">Error: ${e.message}</p>`;
+  }
+}
+
+function publishGeneratedArticle(article) {
+  articles.unshift(article);
+  renderBlogGrid('all');
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn').classList.add('active');
+  document.getElementById('gen-preview').innerHTML += '<p style="color:var(--gold);font-size:0.8rem;margin-top:12px;">✅ Published! Scroll down to see it in the blog grid.</p>';
+}
+
+function previewFullArticle(article) {
+  // Temporarily add to array view without publishing permanently
+  const tempId = 99999;
+  article.id = tempId;
+  const existing = articles.findIndex(a => a.id === tempId);
+  if (existing >= 0) articles[existing] = article; else articles.push(article);
+  openReader(tempId);
+}
+
+renderBlogGrid('all');
+</script>
+</body>
+</html>
